@@ -1,0 +1,151 @@
+nik,nama,tempatLahir,tanggalLahir,jenisKelamin,agama,pendidikan,pekerjaan,statusPerkawinan,alamat,rt,rw,desa,kecamatan,kabupaten,provinsi,golonganDarah,statusKependudukan
+3201010101010001,Budi Santoso,Jakarta,1990-01-15,Laki-laki,Islam,S1,PNS,Menikah,Jl. Raya Merdeka No. 123,01,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010002,Siti Nurhaliza,Bandung,1992-03-20,Perempuan,Islam,SMA,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 124,01,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010003,Agus Wijaya,Surabaya,1988-07-10,Laki-laki,Islam,SMK,Wiraswasta,Menikah,Jl. Raya Merdeka No. 125,01,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010004,Dewi Lestari,Yogyakarta,1995-05-25,Perempuan,Islam,S1,Guru,Belum Menikah,Jl. Raya Merdeka No. 126,02,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010005,Rudi Hartono,Medan,1985-11-30,Laki-laki,Islam,SD,Buruh,Menikah,Jl. Raya Merdeka No. 127,02,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010006,Indah Sari,Palembang,1993-09-12,Perempuan,Islam,SMA,Karyawan Swasta,Belum Menikah,Jl. Raya Merdeka No. 128,02,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010007,Andi Pratama,Makassar,1991-02-18,Laki-laki,Islam,S1,Dokter,Menikah,Jl. Raya Merdeka No. 129,03,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010008,Maya Sari,Denpasar,1994-08-05,Perempuan,Hindu,SMA,Pedagang,Belum Menikah,Jl. Raya Merdeka No. 130,03,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010009,Bambang Sutrisno,Semarang,1987-12-22,Laki-laki,Islam,SMK,Tukang,Menikah,Jl. Raya Merdeka No. 131,03,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010010,Rina Wati,Malang,1996-04-14,Perempuan,Islam,SMA,Mahasiswa,Belum Menikah,Jl. Raya Merdeka No. 132,04,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010011,Joko Widodo,Solo,1989-06-08,Laki-laki,Islam,S1,Pengusaha,Menikah,Jl. Raya Merdeka No. 133,04,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010012,Sri Mulyani,Pekanbaru,1992-10-03,Perempuan,Islam,S2,Dosen,Menikah,Jl. Raya Merdeka No. 134,04,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010013,Arif Rahman,Banjarmasin,1990-01-20,Laki-laki,Islam,SMK,Sopir,Menikah,Jl. Raya Merdeka No. 135,05,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010014,Lina Marlina,Pontianak,1993-07-15,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 136,05,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010015,Dedi Kurniawan,Balikpapan,1986-09-28,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 137,05,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010016,Ani Susanti,Manado,1994-11-11,Perempuan,Kristen,S1,Perawat,Belum Menikah,Jl. Raya Merdeka No. 138,06,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010017,Hendra Gunawan,Padang,1988-03-07,Laki-laki,Islam,SMA,Wiraswasta,Menikah,Jl. Raya Merdeka No. 139,06,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010018,Sari Dewi,Jambi,1995-12-19,Perempuan,Islam,SMA,Ibu Rumah Tangga,Belum Menikah,Jl. Raya Merdeka No. 140,06,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010019,Irfan Maulana,Banda Aceh,1991-05-04,Laki-laki,Islam,S1,Insinyur,Menikah,Jl. Raya Merdeka No. 141,07,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010020,Nurul Hidayati,Mataram,1992-08-22,Perempuan,Islam,SMA,Guru,Menikah,Jl. Raya Merdeka No. 142,07,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010021,Putra Ramadhan,Bekasi,1997-01-30,Laki-laki,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 143,07,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010022,Melati Indah,Tangerang,1998-06-15,Perempuan,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 144,08,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010023,Rizki Fadillah,Depok,1984-04-12,Laki-laki,Islam,S1,Arsitek,Menikah,Jl. Raya Merdeka No. 145,08,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010024,Winda Sari,Cirebon,1990-09-25,Perempuan,Islam,SMA,Perawat,Menikah,Jl. Raya Merdeka No. 146,08,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010025,Supriyadi,Karawang,1975-03-18,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 147,09,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010026,Siti Aisyah,Tasikmalaya,1978-11-08,Perempuan,Islam,SD,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 148,09,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010027,Doni Setiawan,Ciamis,1982-07-22,Laki-laki,Islam,SMK,Mekanik,Menikah,Jl. Raya Merdeka No. 149,09,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010028,Ratna Dewi,Purwakarta,1985-12-05,Perempuan,Islam,SMA,Karyawan,Menikah,Jl. Raya Merdeka No. 150,10,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010029,Eko Prasetyo,Subang,1979-05-14,Laki-laki,Islam,SD,Buruh,Menikah,Jl. Raya Merdeka No. 151,10,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010030,Desi Ratnasari,Indramayu,1983-08-30,Perempuan,Islam,SMA,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 152,10,02,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010031,Anton Wijaya,Bogor,1993-02-14,Laki-laki,Kristen,S1,Insinyur,Belum Menikah,Jl. Raya Merdeka No. 153,11,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010032,Lisa Permata,Bandung,1994-10-28,Perempuan,Kristen,SMA,Guru,Belum Menikah,Jl. Raya Merdeka No. 154,11,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010033,Budi Raharjo,Surabaya,1987-06-17,Laki-laki,Islam,SMK,Wiraswasta,Menikah,Jl. Raya Merdeka No. 155,11,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010034,Sinta Dewi,Yogyakarta,1991-11-23,Perempuan,Islam,S1,Dokter,Menikah,Jl. Raya Merdeka No. 156,12,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010035,Agung Prasetyo,Medan,1989-04-09,Laki-laki,Islam,SMA,Sopir,Menikah,Jl. Raya Merdeka No. 157,12,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010036,Rina Kartika,Palembang,1995-07-19,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 158,12,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010037,Adi Nugroho,Makassar,1986-01-26,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 159,13,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010038,Mira Sari,Denpasar,1992-09-11,Perempuan,Hindu,SMA,Pedagang,Belum Menikah,Jl. Raya Merdeka No. 160,13,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010039,Surya Wijaya,Semarang,1988-12-04,Laki-laki,Islam,SMK,Tukang,Menikah,Jl. Raya Merdeka No. 161,13,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010040,Dian Permata,Malang,1996-03-21,Perempuan,Islam,SMA,Mahasiswa,Belum Menikah,Jl. Raya Merdeka No. 162,14,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010041,Rudi Kurniawan,Solo,1990-08-07,Laki-laki,Islam,S1,Pengusaha,Menikah,Jl. Raya Merdeka No. 163,14,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010042,Nina Sari,Pekanbaru,1993-05-13,Perempuan,Islam,S2,Dosen,Menikah,Jl. Raya Merdeka No. 164,14,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010043,Indra Gunawan,Banjarmasin,1991-10-29,Laki-laki,Islam,SMK,Sopir,Menikah,Jl. Raya Merdeka No. 165,15,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010044,Sari Indah,Pontianak,1994-02-16,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 166,15,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010045,Bambang Setiawan,Balikpapan,1987-07-02,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 167,15,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010046,Ani Lestari,Manado,1995-11-18,Perempuan,Kristen,S1,Perawat,Belum Menikah,Jl. Raya Merdeka No. 168,16,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010047,Hendri Wijaya,Padang,1989-04-05,Laki-laki,Islam,SMA,Wiraswasta,Menikah,Jl. Raya Merdeka No. 169,16,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010048,Dewi Sari,Jambi,1992-09-22,Perempuan,Islam,SMA,Ibu Rumah Tangga,Belum Menikah,Jl. Raya Merdeka No. 170,16,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010049,Irfan Setiawan,Banda Aceh,1990-01-08,Laki-laki,Islam,S1,Insinyur,Menikah,Jl. Raya Merdeka No. 171,17,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010050,Nurul Aisyah,Mataram,1993-06-24,Perempuan,Islam,SMA,Guru,Menikah,Jl. Raya Merdeka No. 172,17,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010051,Putra Wijaya,Bekasi,1998-12-10,Laki-laki,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 173,17,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010052,Melati Sari,Tangerang,1999-05-27,Perempuan,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 174,18,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010053,Rizki Pratama,Depok,1985-09-14,Laki-laki,Islam,S1,Arsitek,Menikah,Jl. Raya Merdeka No. 175,18,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010054,Winda Lestari,Cirebon,1991-03-30,Perempuan,Islam,SMA,Perawat,Menikah,Jl. Raya Merdeka No. 176,18,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010055,Supriyanto,Karawang,1976-08-16,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 177,19,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010056,Siti Fatimah,Tasikmalaya,1979-01-02,Perempuan,Islam,SD,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 178,19,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010057,Doni Kurniawan,Ciamis,1983-10-19,Laki-laki,Islam,SMK,Mekanik,Menikah,Jl. Raya Merdeka No. 179,19,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010058,Ratna Sari,Purwakarta,1986-04-06,Perempuan,Islam,SMA,Karyawan,Menikah,Jl. Raya Merdeka No. 180,20,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010059,Eko Wijaya,Subang,1980-11-23,Laki-laki,Islam,SD,Buruh,Menikah,Jl. Raya Merdeka No. 181,20,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010060,Desi Lestari,Indramayu,1984-07-09,Perempuan,Islam,SMA,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 182,20,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010061,Anton Setiawan,Bogor,1994-02-25,Laki-laki,Kristen,S1,Insinyur,Belum Menikah,Jl. Raya Merdeka No. 183,21,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010062,Lisa Dewi,Bandung,1995-09-11,Perempuan,Kristen,SMA,Guru,Belum Menikah,Jl. Raya Merdeka No. 184,21,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010063,Budi Kurniawan,Surabaya,1988-05-28,Laki-laki,Islam,SMK,Wiraswasta,Menikah,Jl. Raya Merdeka No. 185,21,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010064,Sinta Permata,Yogyakarta,1992-12-14,Perempuan,Islam,S1,Dokter,Menikah,Jl. Raya Merdeka No. 186,22,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010065,Agung Wijaya,Medan,1990-07-01,Laki-laki,Islam,SMA,Sopir,Menikah,Jl. Raya Merdeka No. 187,22,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010066,Rina Sari,Palembang,1996-03-17,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 188,22,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010067,Adi Nugroho,Makassar,1987-10-03,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 189,23,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010068,Mira Lestari,Denpasar,1993-06-20,Perempuan,Hindu,SMA,Pedagang,Belum Menikah,Jl. Raya Merdeka No. 190,23,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010069,Surya Kurniawan,Semarang,1989-01-06,Laki-laki,Islam,SMK,Tukang,Menikah,Jl. Raya Merdeka No. 191,23,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010070,Dian Sari,Malang,1997-08-23,Perempuan,Islam,SMA,Mahasiswa,Belum Menikah,Jl. Raya Merdeka No. 192,24,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010071,Rudi Pratama,Solo,1991-04-10,Laki-laki,Islam,S1,Pengusaha,Menikah,Jl. Raya Merdeka No. 193,24,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010072,Nina Dewi,Pekanbaru,1994-11-26,Perempuan,Islam,S2,Dosen,Menikah,Jl. Raya Merdeka No. 194,24,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010073,Indra Setiawan,Banjarmasin,1992-07-13,Laki-laki,Islam,SMK,Sopir,Menikah,Jl. Raya Merdeka No. 195,25,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010074,Sari Permata,Pontianak,1995-02-28,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 196,25,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010075,Bambang Wijaya,Balikpapan,1988-09-15,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 197,25,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010076,Ani Sari,Manado,1996-05-02,Perempuan,Kristen,S1,Perawat,Belum Menikah,Jl. Raya Merdeka No. 198,26,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010077,Hendri Kurniawan,Padang,1990-12-19,Laki-laki,Islam,SMA,Wiraswasta,Menikah,Jl. Raya Merdeka No. 199,26,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010078,Dewi Lestari,Jambi,1993-08-05,Perempuan,Islam,SMA,Ibu Rumah Tangga,Belum Menikah,Jl. Raya Merdeka No. 200,26,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010079,Irfan Wijaya,Banda Aceh,1991-03-22,Laki-laki,Islam,S1,Insinyur,Menikah,Jl. Raya Merdeka No. 201,27,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010080,Nurul Sari,Mataram,1994-10-08,Perempuan,Islam,SMA,Guru,Menikah,Jl. Raya Merdeka No. 202,27,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010081,Putra Kurniawan,Bekasi,1999-06-25,Laki-laki,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 203,27,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010082,Melati Dewi,Tangerang,2000-01-11,Perempuan,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 204,28,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010083,Rizki Wijaya,Depok,1986-08-28,Laki-laki,Islam,S1,Arsitek,Menikah,Jl. Raya Merdeka No. 205,28,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010084,Winda Sari,Cirebon,1992-04-14,Perempuan,Islam,SMA,Perawat,Menikah,Jl. Raya Merdeka No. 206,28,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010085,Supriyadi,Karawang,1977-11-01,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 207,29,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010086,Siti Aisyah,Tasikmalaya,1980-05-18,Perempuan,Islam,SD,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 208,29,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010087,Doni Setiawan,Ciamis,1984-12-04,Laki-laki,Islam,SMK,Mekanik,Menikah,Jl. Raya Merdeka No. 209,29,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010088,Ratna Dewi,Purwakarta,1987-07-21,Perempuan,Islam,SMA,Karyawan,Menikah,Jl. Raya Merdeka No. 210,30,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010089,Eko Prasetyo,Subang,1981-02-07,Laki-laki,Islam,SD,Buruh,Menikah,Jl. Raya Merdeka No. 211,30,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010090,Desi Ratnasari,Indramayu,1985-09-24,Perempuan,Islam,SMA,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 212,30,03,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010091,Anton Wijaya,Bogor,1995-03-11,Laki-laki,Kristen,S1,Insinyur,Belum Menikah,Jl. Raya Merdeka No. 213,01,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010092,Lisa Permata,Bandung,1996-10-27,Perempuan,Kristen,SMA,Guru,Belum Menikah,Jl. Raya Merdeka No. 214,01,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010093,Budi Raharjo,Surabaya,1989-06-14,Laki-laki,Islam,SMK,Wiraswasta,Menikah,Jl. Raya Merdeka No. 215,01,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010094,Sinta Dewi,Yogyakarta,1993-01-30,Perempuan,Islam,S1,Dokter,Menikah,Jl. Raya Merdeka No. 216,02,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010095,Agung Prasetyo,Medan,1991-08-17,Laki-laki,Islam,SMA,Sopir,Menikah,Jl. Raya Merdeka No. 217,02,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010096,Rina Kartika,Palembang,1997-04-03,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 218,02,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010097,Adi Nugroho,Makassar,1988-11-20,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 219,03,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010098,Mira Sari,Denpasar,1994-07-07,Perempuan,Hindu,SMA,Pedagang,Belum Menikah,Jl. Raya Merdeka No. 220,03,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010099,Surya Wijaya,Semarang,1990-02-23,Laki-laki,Islam,SMK,Tukang,Menikah,Jl. Raya Merdeka No. 221,03,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010100,Dian Permata,Malang,1998-09-10,Perempuan,Islam,SMA,Mahasiswa,Belum Menikah,Jl. Raya Merdeka No. 222,04,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010101,Rudi Kurniawan,Solo,1992-05-27,Laki-laki,Islam,S1,Pengusaha,Menikah,Jl. Raya Merdeka No. 223,04,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010102,Nina Sari,Pekanbaru,1995-12-13,Perempuan,Islam,S2,Dosen,Menikah,Jl. Raya Merdeka No. 224,04,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010103,Indra Gunawan,Banjarmasin,1993-08-30,Laki-laki,Islam,SMK,Sopir,Menikah,Jl. Raya Merdeka No. 225,05,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010104,Sari Indah,Pontianak,1996-03-16,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 226,05,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010105,Bambang Setiawan,Balikpapan,1989-10-02,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 227,05,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010106,Ani Lestari,Manado,1997-06-19,Perempuan,Kristen,S1,Perawat,Belum Menikah,Jl. Raya Merdeka No. 228,06,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010107,Hendri Wijaya,Padang,1991-01-05,Laki-laki,Islam,SMA,Wiraswasta,Menikah,Jl. Raya Merdeka No. 229,06,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010108,Dewi Sari,Jambi,1994-08-22,Perempuan,Islam,SMA,Ibu Rumah Tangga,Belum Menikah,Jl. Raya Merdeka No. 230,06,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010109,Irfan Setiawan,Banda Aceh,1992-04-09,Laki-laki,Islam,S1,Insinyur,Menikah,Jl. Raya Merdeka No. 231,07,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010110,Nurul Aisyah,Mataram,1995-11-25,Perempuan,Islam,SMA,Guru,Menikah,Jl. Raya Merdeka No. 232,07,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010111,Putra Wijaya,Bekasi,2000-07-12,Laki-laki,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 233,07,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010112,Melati Sari,Tangerang,2001-02-28,Perempuan,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 234,08,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010113,Rizki Pratama,Depok,1987-09-14,Laki-laki,Islam,S1,Arsitek,Menikah,Jl. Raya Merdeka No. 235,08,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010114,Winda Lestari,Cirebon,1993-05-01,Perempuan,Islam,SMA,Perawat,Menikah,Jl. Raya Merdeka No. 236,08,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010115,Supriyanto,Karawang,1978-12-18,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 237,09,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010116,Siti Fatimah,Tasikmalaya,1981-06-04,Perempuan,Islam,SD,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 238,09,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010117,Doni Kurniawan,Ciamis,1985-01-21,Laki-laki,Islam,SMK,Mekanik,Menikah,Jl. Raya Merdeka No. 239,09,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010118,Ratna Sari,Purwakarta,1988-08-08,Perempuan,Islam,SMA,Karyawan,Menikah,Jl. Raya Merdeka No. 240,10,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010119,Eko Wijaya,Subang,1982-03-25,Laki-laki,Islam,SD,Buruh,Menikah,Jl. Raya Merdeka No. 241,10,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010120,Desi Lestari,Indramayu,1986-10-11,Perempuan,Islam,SMA,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 242,10,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010121,Anton Setiawan,Bogor,1996-04-28,Laki-laki,Kristen,S1,Insinyur,Belum Menikah,Jl. Raya Merdeka No. 243,11,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010122,Lisa Dewi,Bandung,1997-11-14,Perempuan,Kristen,SMA,Guru,Belum Menikah,Jl. Raya Merdeka No. 244,11,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010123,Budi Kurniawan,Surabaya,1990-07-01,Laki-laki,Islam,SMK,Wiraswasta,Menikah,Jl. Raya Merdeka No. 245,11,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010124,Sinta Permata,Yogyakarta,1994-02-17,Perempuan,Islam,S1,Dokter,Menikah,Jl. Raya Merdeka No. 246,12,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010125,Agung Wijaya,Medan,1992-09-03,Laki-laki,Islam,SMA,Sopir,Menikah,Jl. Raya Merdeka No. 247,12,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010126,Rina Sari,Palembang,1998-05-20,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 248,12,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010127,Adi Nugroho,Makassar,1989-12-06,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 249,13,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010128,Mira Lestari,Denpasar,1995-08-23,Perempuan,Hindu,SMA,Pedagang,Belum Menikah,Jl. Raya Merdeka No. 250,13,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010129,Surya Kurniawan,Semarang,1991-03-10,Laki-laki,Islam,SMK,Tukang,Menikah,Jl. Raya Merdeka No. 251,13,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010130,Dian Sari,Malang,1999-10-27,Perempuan,Islam,SMA,Mahasiswa,Belum Menikah,Jl. Raya Merdeka No. 252,14,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010131,Rudi Pratama,Solo,1993-06-13,Laki-laki,Islam,S1,Pengusaha,Menikah,Jl. Raya Merdeka No. 253,14,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010132,Nina Dewi,Pekanbaru,1996-01-30,Perempuan,Islam,S2,Dosen,Menikah,Jl. Raya Merdeka No. 254,14,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010133,Indra Setiawan,Banjarmasin,1994-08-16,Laki-laki,Islam,SMK,Sopir,Menikah,Jl. Raya Merdeka No. 255,15,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010134,Sari Permata,Pontianak,1997-04-02,Perempuan,Islam,SMA,Karyawan,Belum Menikah,Jl. Raya Merdeka No. 256,15,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010135,Bambang Wijaya,Balikpapan,1990-11-19,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 257,15,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010136,Ani Sari,Manado,1998-07-05,Perempuan,Kristen,S1,Perawat,Belum Menikah,Jl. Raya Merdeka No. 258,16,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010137,Hendri Kurniawan,Padang,1992-02-22,Laki-laki,Islam,SMA,Wiraswasta,Menikah,Jl. Raya Merdeka No. 259,16,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010138,Dewi Lestari,Jambi,1995-09-08,Perempuan,Islam,SMA,Ibu Rumah Tangga,Belum Menikah,Jl. Raya Merdeka No. 260,16,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010139,Irfan Wijaya,Banda Aceh,1993-05-25,Laki-laki,Islam,S1,Insinyur,Menikah,Jl. Raya Merdeka No. 261,17,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010140,Nurul Sari,Mataram,1996-12-11,Perempuan,Islam,SMA,Guru,Menikah,Jl. Raya Merdeka No. 262,17,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010141,Putra Kurniawan,Bekasi,2001-08-28,Laki-laki,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 263,17,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010142,Melati Dewi,Tangerang,2002-03-15,Perempuan,Islam,SMP,Pelajar,Belum Menikah,Jl. Raya Merdeka No. 264,18,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010143,Rizki Wijaya,Depok,1988-10-01,Laki-laki,Islam,S1,Arsitek,Menikah,Jl. Raya Merdeka No. 265,18,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010144,Winda Sari,Cirebon,1994-05-18,Perempuan,Islam,SMA,Perawat,Menikah,Jl. Raya Merdeka No. 266,18,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010145,Supriyadi,Karawang,1979-01-04,Laki-laki,Islam,SD,Petani,Menikah,Jl. Raya Merdeka No. 267,19,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010146,Siti Aisyah,Tasikmalaya,1982-08-21,Perempuan,Islam,SD,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 268,19,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
+3201010101010147,Doni Setiawan,Ciamis,1986-04-07,Laki-laki,Islam,SMK,Mekanik,Menikah,Jl. Raya Merdeka No. 269,19,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,O,Aktif
+3201010101010148,Ratna Dewi,Purwakarta,1989-11-24,Perempuan,Islam,SMA,Karyawan,Menikah,Jl. Raya Merdeka No. 270,20,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,AB,Aktif
+3201010101010149,Eko Prasetyo,Subang,1983-07-10,Laki-laki,Islam,SD,Buruh,Menikah,Jl. Raya Merdeka No. 271,20,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,A,Aktif
+3201010101010150,Desi Ratnasari,Indramayu,1987-02-26,Perempuan,Islam,SMA,Ibu Rumah Tangga,Menikah,Jl. Raya Merdeka No. 272,20,04,Desa Sukamaju,Kecamatan Sukajaya,Kabupaten Bogor,Jawa Barat,B,Aktif
