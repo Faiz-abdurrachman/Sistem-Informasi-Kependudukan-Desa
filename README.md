@@ -13,6 +13,7 @@ Sistem informasi kependudukan desa yang dibangun dengan teknologi modern dan sta
 - [Human Touch Features](#human-touch-features)
 - [Keamanan](#keamanan)
 - [Troubleshooting](#troubleshooting)
+- [📚 Dokumentasi Lengkap](#-dokumentasi-lengkap)
 
 ## ✨ Fitur Utama
 
@@ -562,6 +563,36 @@ Import data penduduk dari CSV
 rm -rf node_modules package-lock.json
 npm install
 ```
+
+## 📚 Dokumentasi Lengkap
+
+Untuk dokumentasi lebih lengkap tentang sistem, silakan baca:
+
+1. **[ANALISIS-DAN-RENCANA-PERBAIKAN.md](./ANALISIS-DAN-RENCANA-PERBAIKAN.md)**
+   - Analisis masalah yang ditemukan
+   - Rencana perbaikan dengan prioritas
+   - Checklist perbaikan
+   - Prompt untuk implementasi
+
+2. **[DIAGRAM-KONSEP.md](./DIAGRAM-KONSEP.md)**
+   - Entity Relationship Diagram (ERD)
+   - Diagram alur data
+   - Arsitektur sistem
+   - Security layers
+
+3. **[ALUR-KERJA-DESA.md](./ALUR-KERJA-DESA.md)**
+   - Narasi sistem
+   - Alur kerja sehari-hari
+   - Use case detail
+   - Contoh kasus nyata
+
+4. **[ROLE-PERMISSION.md](./ROLE-PERMISSION.md)**
+   - Permission matrix lengkap
+   - Detail peran setiap role
+   - Security considerations
+   - Implementation notes
+
+---
 
 ## 📝 Catatan Penting
 
