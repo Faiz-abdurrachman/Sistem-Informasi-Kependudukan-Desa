@@ -39,6 +39,10 @@ prisma/migrations/
 *.md
 !README.md
 !dummy_data/README.md
+!ANALISIS-DAN-RENCANA-PERBAIKAN.md
+!ALUR-KERJA-*.md
+!DIAGRAM-*.md
+!ROLE-PERMISSIONS.md
 
 # Exclude specific documentation files (backup pattern)
 DOKUMENTASI_PRESENTASI_LENGKAP.md
