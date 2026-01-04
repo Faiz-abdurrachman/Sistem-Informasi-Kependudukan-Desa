@@ -51,6 +51,9 @@ model User {
   // Relasi ke surat (untuk tracking siapa yang membuat surat)
   surat     Surat[]
 
+  // Relasi ke audit log (untuk tracking aktivitas user)
+  auditLog  AuditLog[]
+
   @@index([username])
   @@index([email])
   @@map("users")
@@ -131,6 +134,7 @@ model KartuKeluarga {
   kabupaten     String   @db.VarChar(100)
   provinsi      String   @db.VarChar(100)
   kodePos       String?  @db.VarChar(10)
+  isActive      Boolean  @default(true) // SOFT DELETE: true = aktif, false = dinonaktifkan
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -139,6 +143,7 @@ model KartuKeluarga {
 
   @@index([nomorKK])
   @@index([kepalaKeluargaId])
+  @@index([isActive])
   @@map("kartu_keluarga")
 }
 
@@ -207,5 +212,31 @@ model Statistik {
   updatedAt     DateTime @updatedAt
 
   @@map("statistik")
+}
+
+// ============================================
+// MODEL: AUDIT LOG (WAJIB PEMERINTAH)
+// ============================================
+// Tabel untuk mencatat semua aktivitas perubahan data
+// WAJIB untuk sistem pemerintahan: akuntabilitas & audit trail
+// Mencatat: Siapa, Kapan, Apa yang diubah, Before/After
+model AuditLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  aksi        String   @db.VarChar(20)  // CREATE, UPDATE, DELETE, VIEW
+  entity      String   @db.VarChar(50)  // Penduduk, KartuKeluarga, Surat, User
+  entityId    Int?
+  beforeData  Json?    // Data sebelum (untuk UPDATE)
+  afterData   Json?    // Data setelah
+  ipAddress   String?  @db.VarChar(45)
+  userAgent   String?  @db.Text
+  keterangan  String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_log")
 }
 

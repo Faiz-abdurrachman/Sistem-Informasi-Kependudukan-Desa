@@ -40,6 +40,7 @@ import importRoutes from "./routes/importRoutes.js";
 import trendRoutes from "./routes/trendRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import laporanRoutes from "./routes/laporanRoutes.js";
+import dataQualityRoutes from "./routes/dataQualityRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -133,6 +134,7 @@ app.use("/api/kk", kkRoutes);
 app.use("/api/surat", suratRoutes);
 app.use("/api/statistik", statistikRoutes);
 app.use("/api/laporan", laporanRoutes);
+app.use("/api/data-quality", dataQualityRoutes);
 app.use("/api/import", importRoutes);
 app.use("/api/trend", trendRoutes);
 

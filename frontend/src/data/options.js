@@ -132,11 +132,14 @@ export const golonganDarahOptions = [
 
 /**
  * Pilihan Status Kependudukan
+ * MODEL ADMINISTRATIF: Status "Aktif" hanya bisa dipilih jika penduduk sudah di KK
+ * Untuk penduduk baru, gunakan "Belum Terdaftar di KK"
  */
 export const statusKependudukanOptions = [
+  { value: "Belum Terdaftar di KK", label: "Belum Terdaftar di KK" },
   { value: "Aktif", label: "Aktif" },
-  { value: "Meninggal", label: "Meninggal" },
   { value: "Pindah", label: "Pindah" },
+  { value: "Meninggal", label: "Meninggal" },
 ];
 
 /**

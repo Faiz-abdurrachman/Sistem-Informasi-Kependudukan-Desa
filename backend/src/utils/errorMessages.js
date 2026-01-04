@@ -138,11 +138,14 @@ export const ERROR_MESSAGES = {
   ALREADY_EXISTS: (resource) => `Data ${resource} sudah ada di sistem.`,
   INVALID_ID: 'ID yang Anda masukkan tidak valid.',
 
-  // Business Logic
-  PENDUDUK_AKTIF_MUST_HAVE_KK: 'Penduduk dengan status "Aktif" harus menjadi anggota minimal satu Kartu Keluarga.',
+  // Business Logic - Administrative Rules (WAJIB)
+  PENDUDUK_AKTIF_MUST_HAVE_KK: 'Penduduk dengan status "Aktif" harus terdaftar di Kartu Keluarga. Silakan tambahkan penduduk ke KK terlebih dahulu, atau gunakan status "Belum Terdaftar di KK" jika belum memiliki KK.',
+  PENDUDUK_AKTIF_CANNOT_CREATE_WITHOUT_KK: 'Tidak dapat membuat penduduk dengan status "Aktif" tanpa Kartu Keluarga. Penduduk aktif harus terdaftar di Kartu Keluarga. Silakan gunakan status "Belum Terdaftar di KK" atau "Pendatang Sementara" jika belum memiliki KK.',
+  PENDUDUK_AKTIF_CANNOT_UPDATE_WITHOUT_KK: 'Tidak dapat mengubah status menjadi "Aktif". Penduduk harus terdaftar di Kartu Keluarga terlebih dahulu. Silakan tambahkan penduduk ke KK sebelum mengubah status menjadi "Aktif".',
+  PENDUDUK_AKTIF_CANNOT_CREATE_SURAT: 'Tidak dapat membuat surat untuk penduduk ini. Penduduk dengan status "Aktif" harus terdaftar di Kartu Keluarga. Silakan daftarkan penduduk ke KK terlebih dahulu.',
   KEPALA_KELUARGA_CANNOT_BE_MEMBER: 'Kepala keluarga tidak boleh menjadi anggota Kartu Keluarga lain.',
   PENDUDUK_ALREADY_IN_KK: 'Penduduk sudah terdaftar sebagai anggota Kartu Keluarga lain.',
-  ONE_PENDUDUK_ONE_KK: 'Satu penduduk aktif hanya bisa menjadi anggota satu Kartu Keluarga.',
+  ONE_PENDUDUK_ONE_KK: 'Penduduk ini sudah terdaftar di Kartu Keluarga lain. Satu penduduk aktif hanya dapat terdaftar di satu Kartu Keluarga. Jika ingin memindahkan, keluarkan dulu dari KK sebelumnya.',
 
   // Authentication
   UNAUTHORIZED: 'Anda tidak memiliki izin untuk mengakses resource ini.',

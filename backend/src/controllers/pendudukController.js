@@ -39,6 +39,7 @@ import {
   calculateUmur,
 } from "../utils/validators.js";
 import { ERROR_MESSAGES, sendErrorResponse } from "../utils/errorMessages.js";
+import { logActivity, formatDataForAudit } from "../services/auditLogService.js";
 
 /**
  * Get semua penduduk dengan pagination dan filter
@@ -316,7 +317,22 @@ export const createPenduduk = async (req, res) => {
       });
     }
 
-    // Create penduduk
+    // MODEL ADMINISTRATIF: Validasi Ketat - Penduduk AKTIF HARUS punya KK
+    // ATURAN ADMINISTRATIF: Penduduk dengan status AKTIF tidak boleh dibuat tanpa KK
+    // Status AKTIF = Status administratif resmi, HARUS terdaftar di KK
+    if (statusKependudukan === "Aktif") {
+      // Penduduk baru tidak bisa langsung AKTIF tanpa KK
+      // Status yang diizinkan untuk penduduk baru tanpa KK:
+      // - "Belum Terdaftar di KK" (atau "Pindah" jika dari desa lain)
+      // - "Pendatang Sementara" (opsional, jika ada)
+      return res.status(400).json({
+        success: false,
+        message: ERROR_MESSAGES.PENDUDUK_AKTIF_CANNOT_CREATE_WITHOUT_KK,
+        details: "Penduduk dengan status 'Aktif' adalah penduduk resmi desa yang harus terdaftar di Kartu Keluarga. Untuk penduduk baru, gunakan status 'Belum Terdaftar di KK' atau 'Pindah' terlebih dahulu, kemudian tambahkan ke KK dan ubah status menjadi 'Aktif' setelah terdaftar di KK.",
+      });
+    }
+
+    // Create penduduk (hanya jika status bukan AKTIF)
     const newPenduduk = await prisma.penduduk.create({
       data: {
         nik,
@@ -341,12 +357,30 @@ export const createPenduduk = async (req, res) => {
       },
     });
 
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas CREATE
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "CREATE",
+        "Penduduk",
+        newPenduduk.id,
+        null, // beforeData (tidak ada karena CREATE)
+        formatDataForAudit(newPenduduk, "Penduduk"), // afterData
+        req,
+        `Membuat data penduduk baru: ${newPenduduk.nama} (NIK: ${newPenduduk.nik})`
+      );
+    }
+
     return res.status(201).json({
       success: true,
       message: "Data penduduk berhasil ditambahkan",
       data: {
         penduduk: newPenduduk,
       },
+      info: statusKependudukan !== "Aktif"
+        ? "Untuk mengubah status menjadi 'Aktif', penduduk harus ditambahkan ke Kartu Keluarga terlebih dahulu."
+        : undefined,
     });
   } catch (error) {
     console.error("Create penduduk error:", error);
@@ -420,7 +454,8 @@ export const updatePenduduk = async (req, res) => {
       updateData.tanggalLahir = new Date(updateData.tanggalLahir);
     }
 
-    // PHASE 1.2: Validasi penduduk aktif harus jadi anggota minimal 1 KK
+    // MODEL ADMINISTRATIF: Validasi Ketat - Penduduk AKTIF HARUS punya KK
+    // ATURAN ADMINISTRATIF: Tidak boleh mengubah status menjadi AKTIF tanpa KK
     const newStatus = updateData.statusKependudukan || existingPenduduk.statusKependudukan;
     if (newStatus === "Aktif") {
       const anggotaKK = await prisma.anggotaKeluarga.findFirst({
@@ -428,13 +463,20 @@ export const updatePenduduk = async (req, res) => {
           pendudukId: parseInt(id),
           status: "Aktif",
         },
+        include: {
+          kartuKeluarga: {
+            select: {
+              nomorKK: true,
+            },
+          },
+        },
       });
 
       if (!anggotaKK) {
         return res.status(400).json({
           success: false,
-          message: ERROR_MESSAGES.PENDUDUK_AKTIF_MUST_HAVE_KK,
-          details: "Silakan tambahkan penduduk ke Kartu Keluarga terlebih dahulu sebelum mengubah status menjadi 'Aktif'.",
+          message: ERROR_MESSAGES.PENDUDUK_AKTIF_CANNOT_UPDATE_WITHOUT_KK,
+          details: "Status 'Aktif' adalah status administratif resmi yang mengharuskan penduduk terdaftar di Kartu Keluarga. Silakan tambahkan penduduk ke KK terlebih dahulu, kemudian ubah status menjadi 'Aktif'.",
         });
       }
     }
@@ -444,6 +486,21 @@ export const updatePenduduk = async (req, res) => {
       where: { id: parseInt(id) },
       data: updateData,
     });
+
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas UPDATE
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "UPDATE",
+        "Penduduk",
+        parseInt(id),
+        formatDataForAudit(existingPenduduk, "Penduduk"), // beforeData
+        formatDataForAudit(updatedPenduduk, "Penduduk"), // afterData
+        req,
+        `Mengupdate data penduduk: ${updatedPenduduk.nama} (NIK: ${updatedPenduduk.nik})`
+      );
+    }
 
     return res.status(200).json({
       success: true,
@@ -509,14 +566,36 @@ export const deletePenduduk = async (req, res) => {
       });
     }
 
-    // Delete penduduk (hard delete)
-    await prisma.penduduk.delete({
+    // PHASE 0.2: SOFT DELETE POLICY
+    // Penduduk tidak dihapus, tetapi statusKependudukan diubah menjadi "Pindah"
+    // Prinsip administratif: Data TIDAK dihapus, tetapi DINONAKTIFKAN atau DIUBAH STATUSNYA
+
+    // Update status menjadi "Pindah" (soft delete)
+    const updatedPenduduk = await prisma.penduduk.update({
       where: { id: parseInt(id) },
+      data: {
+        statusKependudukan: "Pindah",
+      },
     });
+
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas DELETE (soft delete)
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "DELETE",
+        "Penduduk",
+        parseInt(id),
+        formatDataForAudit(existingPenduduk, "Penduduk"), // beforeData
+        formatDataForAudit(updatedPenduduk, "Penduduk"), // afterData (statusKependudukan = "Pindah")
+        req,
+        `Menghapus data penduduk (soft delete): ${existingPenduduk.nama} (NIK: ${existingPenduduk.nik}) - Status diubah menjadi "Pindah"`
+      );
+    }
 
     return res.status(200).json({
       success: true,
-      message: "Data penduduk berhasil dihapus",
+      message: "Data penduduk berhasil dihapus (status diubah menjadi 'Pindah')",
     });
   } catch (error) {
     console.error("Delete penduduk error:", error);

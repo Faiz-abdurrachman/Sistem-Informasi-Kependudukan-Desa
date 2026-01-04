@@ -38,6 +38,8 @@ import {
   generateNomorSurat,
   getKodeJenisSurat,
 } from "../services/suratGenerator.js";
+import { ERROR_MESSAGES } from "../utils/errorMessages.js";
+import { logActivity, formatDataForAudit } from "../services/auditLogService.js";
 
 /**
  * Get semua surat dengan pagination dan filter
@@ -49,7 +51,7 @@ import {
  * @query {number} limit - Jumlah data per halaman (default: 10)
  * @query {string} search - Search by nomor surat atau nama penduduk
  * @query {string} jenisSurat - Filter by jenis surat
- * @query {string} status - Filter by status (Draft, Selesai, Dicetak)
+ * @query {string} status - Filter by status (Draft, Selesai, Dicetak, Dibatalkan)
  *
  * @returns {Object} { success, message, data: { surat, pagination } }
  */
@@ -255,10 +257,17 @@ export const createSurat = async (req, res) => {
       });
     }
 
-    // Jika pendudukId diisi, cek apakah penduduk ada
+    // MODEL ADMINISTRATIF: Validasi Ketat - Surat untuk Penduduk AKTIF harus punya KK
+    // ATURAN ADMINISTRATIF: Tidak boleh membuat surat untuk penduduk AKTIF tanpa KK
     if (pendudukId) {
       const penduduk = await prisma.penduduk.findUnique({
         where: { id: parseInt(pendudukId) },
+        select: {
+          id: true,
+          nik: true,
+          nama: true,
+          statusKependudukan: true,
+        },
       });
 
       if (!penduduk) {
@@ -266,6 +275,31 @@ export const createSurat = async (req, res) => {
           success: false,
           message: "Data penduduk tidak ditemukan",
         });
+      }
+
+      // Validasi: Penduduk AKTIF harus punya KK
+      if (penduduk.statusKependudukan === "Aktif") {
+        const anggotaKK = await prisma.anggotaKeluarga.findFirst({
+          where: {
+            pendudukId: parseInt(pendudukId),
+            status: "Aktif",
+          },
+          include: {
+            kartuKeluarga: {
+              select: {
+                nomorKK: true,
+              },
+            },
+          },
+        });
+
+        if (!anggotaKK) {
+          return res.status(400).json({
+            success: false,
+            message: ERROR_MESSAGES.PENDUDUK_AKTIF_CANNOT_CREATE_SURAT,
+            details: `Penduduk ${penduduk.nama} (NIK: ${penduduk.nik}) dengan status 'Aktif' harus terdaftar di Kartu Keluarga untuk dapat dibuatkan surat. Silakan daftarkan penduduk ke KK terlebih dahulu.`,
+          });
+        }
       }
     }
 
@@ -308,6 +342,18 @@ export const createSurat = async (req, res) => {
         },
       },
     });
+
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas CREATE
+    await logActivity(
+      userId,
+      "CREATE",
+      "Surat",
+      newSurat.id,
+      null, // beforeData (tidak ada karena CREATE)
+      formatDataForAudit(newSurat, "Surat"), // afterData
+      req,
+      `Membuat surat baru: ${newSurat.nomorSurat} (Jenis: ${newSurat.jenisSurat})`
+    );
 
     return res.status(201).json({
       success: true,
@@ -414,6 +460,21 @@ export const updateSurat = async (req, res) => {
       },
     });
 
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas UPDATE
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "UPDATE",
+        "Surat",
+        parseInt(id),
+        formatDataForAudit(existingSurat, "Surat"), // beforeData
+        formatDataForAudit(updatedSurat, "Surat"), // afterData
+        req,
+        `Mengupdate surat: ${updatedSurat.nomorSurat} (Jenis: ${updatedSurat.jenisSurat})`
+      );
+    }
+
     return res.status(200).json({
       success: true,
       message: "Surat berhasil diupdate",
@@ -448,8 +509,8 @@ export const updateStatusSurat = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    // Validasi status
-    const validStatus = ["Draft", "Selesai", "Dicetak"];
+    // Validasi status (PHASE 0.2: Tambah "Dibatalkan" untuk soft delete)
+    const validStatus = ["Draft", "Selesai", "Dicetak", "Dibatalkan"];
     if (!status || !validStatus.includes(status)) {
       return res.status(400).json({
         success: false,
@@ -536,14 +597,55 @@ export const deleteSurat = async (req, res) => {
       });
     }
 
-    // Delete surat
-    await prisma.surat.delete({
+    // PHASE 0.2: SOFT DELETE POLICY
+    // Surat tidak dihapus, tetapi status diubah menjadi "Dibatalkan"
+    // Prinsip administratif: Data TIDAK dihapus, tetapi DINONAKTIFKAN atau DIUBAH STATUSNYA
+
+    // Update status menjadi "Dibatalkan" (soft delete)
+    const updatedSurat = await prisma.surat.update({
       where: { id: parseInt(id) },
+      data: {
+        status: "Dibatalkan",
+      },
+      include: {
+        penduduk: {
+          select: {
+            id: true,
+            nik: true,
+            nama: true,
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            username: true,
+            nama: true,
+          },
+        },
+      },
     });
+
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas DELETE (soft delete)
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "DELETE",
+        "Surat",
+        parseInt(id),
+        formatDataForAudit(existingSurat, "Surat"), // beforeData
+        formatDataForAudit(updatedSurat, "Surat"), // afterData (status = "Dibatalkan")
+        req,
+        `Menghapus surat (soft delete): ${existingSurat.nomorSurat} (Jenis: ${existingSurat.jenisSurat}) - Status diubah menjadi "Dibatalkan"`
+      );
+    }
 
     return res.status(200).json({
       success: true,
-      message: "Surat berhasil dihapus",
+      message: "Surat berhasil dihapus (status diubah menjadi 'Dibatalkan')",
+      data: {
+        surat: updatedSurat,
+      },
     });
   } catch (error) {
     console.error("Delete surat error:", error);

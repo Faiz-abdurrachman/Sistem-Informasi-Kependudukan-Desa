@@ -52,7 +52,7 @@ const Penduduk = () => {
     kabupaten: "",
     provinsi: "",
     golonganDarah: "",
-    statusKependudukan: "Aktif",
+    statusKependudukan: "Belum Terdaftar di KK", // MODEL ADMINISTRATIF: Default status untuk penduduk baru
   });
   const [pagination, setPagination] = useState({
     page: 1,
@@ -190,7 +190,7 @@ const Penduduk = () => {
       kabupaten: "",
       provinsi: "",
       golonganDarah: "",
-      statusKependudukan: "Aktif",
+      statusKependudukan: "Belum Terdaftar di KK", // MODEL ADMINISTRATIF: Default status untuk penduduk baru
     });
     setEditingId(null);
   };
@@ -588,10 +588,17 @@ const Penduduk = () => {
                   })
                 }
               >
-                <option value="Aktif">Aktif</option>
-                <option value="Meninggal">Meninggal</option>
-                <option value="Pindah">Pindah</option>
+                {statusKependudukanOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
+              {!editingId && formData.statusKependudukan === "Aktif" && (
+                <p className="mt-1 text-xs text-amber-600">
+                  ⚠️ Status "Aktif" hanya untuk penduduk yang sudah terdaftar di Kartu Keluarga. Penduduk baru harus menggunakan "Belum Terdaftar di KK" terlebih dahulu.
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">

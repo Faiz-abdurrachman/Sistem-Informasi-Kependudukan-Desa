@@ -568,53 +568,81 @@ npm install
 
 Untuk dokumentasi lebih lengkap tentang sistem, silakan baca:
 
-1. **[SETUP-DAN-INSTALASI.md](./SETUP-DAN-INSTALASI.md)** ⭐ **WAJIB BACA PERTAMA!**
-   - Setup lengkap step-by-step dari awal
-   - Troubleshooting common issues
-   - Verifikasi instalasi
-   - Catatan penting untuk production
-
-2. **[FITUR-DAN-PERBAIKAN.md](./FITUR-DAN-PERBAIKAN.md)**
-   - Daftar lengkap semua fitur
-   - Detail perbaikan yang telah dilakukan
-   - Statistik implementasi
-   - Checklist perbaikan
-
-3. **[PANDUAN-PRESENTASI-CLIENT.md](./PANDUAN-PRESENTASI-CLIENT.md)**
-   - Panduan lengkap presentasi ke client
-   - Struktur presentasi (30-45 menit)
-   - Demo script untuk setiap fitur
-   - Q&A preparation
-
-4. **[ALUR-KERJA-DESA.md](./ALUR-KERJA-DESA.md)**
-   - Narasi sistem
-   - Alur kerja sehari-hari
-   - Use case detail
-   - Contoh kasus nyata
-
-5. **[ROLE-PERMISSION.md](./ROLE-PERMISSION.md)**
-   - Permission matrix lengkap
-   - Detail peran setiap role
-   - Security considerations
-   - Implementation notes
-
-6. **[DIAGRAM-KONSEP.md](./DIAGRAM-KONSEP.md)**
-   - Entity Relationship Diagram (ERD)
-   - Diagram alur data
-   - Arsitektur sistem
-   - Security layers
-
-7. **[ANALISIS-DAN-RENCANA-PERBAIKAN.md](./ANALISIS-DAN-RENCANA-PERBAIKAN.md)**
+1. **[ANALISIS-DAN-RENCANA-PERBAIKAN.md](./ANALISIS-DAN-RENCANA-PERBAIKAN.md)**
    - Analisis masalah yang ditemukan
    - Rencana perbaikan dengan prioritas
    - Checklist perbaikan
    - Prompt untuk implementasi
 
-8. **[ANALISIS-FINAL.md](./ANALISIS-FINAL.md)**
-   - Status implementasi final
-   - Checklist completion
-   - Code quality analysis
-   - Production readiness
+2. **[MODEL-ADMINISTRATIF-STATUS.md](./MODEL-ADMINISTRATIF-STATUS.md)**
+   - Model administratif berbasis status (WAJIB)
+   - Aturan validasi ketat untuk penduduk AKTIF
+   - Alur kerja administratif yang benar
+
+3. **[TESTING-VALIDASI-ADMINISTRATIF.md](./TESTING-VALIDASI-ADMINISTRATIF.md)**
+   - Panduan testing dan verifikasi validasi administratif
+   - Skenario testing lengkap dengan contoh request/response
+   - Checklist verifikasi implementasi
+
+4. **[REVIEW-PHASE-0.1-AUDIT-LOG.md](./REVIEW-PHASE-0.1-AUDIT-LOG.md)**
+   - Review implementasi Phase 0.1: Audit Log System
+   - Penjelasan lengkap apa yang sudah dibuat
+   - Panduan testing & uji coba
+   - Checklist verifikasi
+   - Troubleshooting guide
+
+5. **[REVIEW-PHASE-0.2-SOFT-DELETE.md](./REVIEW-PHASE-0.2-SOFT-DELETE.md)**
+   - Review implementasi Phase 0.2: Soft Delete Policy
+   - Penjelasan lengkap apa yang sudah dibuat
+   - Panduan testing & uji coba
+   - Checklist verifikasi
+   - Troubleshooting guide
+
+6. **[REVIEW-PHASE-0.3-PENOMORAN-SURAT.md](./REVIEW-PHASE-0.3-PENOMORAN-SURAT.md)**
+   - Review implementasi Phase 0.3: Penomoran Surat Resmi
+   - Penjelasan lengkap apa yang sudah dibuat
+   - Panduan testing & uji coba
+   - Checklist verifikasi
+   - Troubleshooting guide
+
+7. **[REVIEW-PHASE-1-DATA-INTEGRITY.md](./REVIEW-PHASE-1-DATA-INTEGRITY.md)**
+   - Review implementasi Phase 1: Data Integrity (Auto-sync Penduduk ↔ KK)
+   - Penjelasan lengkap apa yang sudah dibuat
+   - Panduan testing & uji coba
+   - Checklist verifikasi
+   - Troubleshooting guide
+
+8. **[REVIEW-PHASE-2-USER-MANAGEMENT.md](./REVIEW-PHASE-2-USER-MANAGEMENT.md)**
+   - Review implementasi Phase 2: User Management & Dokumentasi
+   - Penjelasan lengkap apa yang sudah dibuat
+   - Panduan testing & uji coba
+   - Checklist verifikasi
+   - Troubleshooting guide
+
+9. **[REVIEW-PHASE-3-OUTPUT-DESA-DATA-QUALITY.md](./REVIEW-PHASE-3-OUTPUT-DESA-DATA-QUALITY.md)**
+   - Review implementasi Phase 3: Output Desa & Data Quality
+   - Penjelasan lengkap apa yang sudah dibuat
+   - Panduan testing & uji coba
+   - Checklist verifikasi
+   - Troubleshooting guide
+
+10. **[DIAGRAM-KONSEP.md](./DIAGRAM-KONSEP.md)**
+   - Entity Relationship Diagram (ERD)
+   - Diagram alur data
+   - Arsitektur sistem
+   - Security layers
+
+3. **[ALUR-KERJA-DESA.md](./ALUR-KERJA-DESA.md)**
+   - Narasi sistem
+   - Alur kerja sehari-hari
+   - Use case detail
+   - Contoh kasus nyata
+
+15. **[ROLE-PERMISSION.md](./ROLE-PERMISSION.md)**
+   - Permission matrix lengkap
+   - Detail peran setiap role
+   - Security considerations
+   - Implementation notes
 
 ---
 

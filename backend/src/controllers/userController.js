@@ -39,6 +39,7 @@
 import bcrypt from 'bcryptjs';
 import prisma from '../config/database.js';
 import { validateEmail } from '../utils/validators.js';
+import { logActivity, formatDataForAudit } from '../services/auditLogService.js';
 
 /**
  * Get semua user dengan pagination dan filter
@@ -288,6 +289,21 @@ export const createUser = async (req, res) => {
       },
     });
 
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas CREATE
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        'CREATE',
+        'User',
+        newUser.id,
+        null, // beforeData (tidak ada karena CREATE)
+        formatDataForAudit(newUser, 'User'), // afterData
+        req,
+        `Membuat user baru: ${newUser.username} (Role: ${newUser.role})`
+      );
+    }
+
     return res.status(201).json({
       success: true,
       message: 'User berhasil ditambahkan',
@@ -330,9 +346,19 @@ export const updateUser = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
 
-    // Cek apakah user ada
+    // Cek apakah user ada (dengan select untuk menghindari password)
     const existingUser = await prisma.user.findUnique({
       where: { id: parseInt(id) },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        nama: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     if (!existingUser) {
@@ -404,6 +430,21 @@ export const updateUser = async (req, res) => {
       },
     });
 
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas UPDATE
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        'UPDATE',
+        'User',
+        parseInt(id),
+        formatDataForAudit(existingUser, 'User'), // beforeData
+        formatDataForAudit(updatedUser, 'User'), // afterData
+        req,
+        `Mengupdate user: ${updatedUser.username} (Role: ${updatedUser.role})`
+      );
+    }
+
     return res.status(200).json({
       success: true,
       message: 'User berhasil diupdate',
@@ -443,9 +484,19 @@ export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Cek apakah user ada
+    // Cek apakah user ada (dengan select untuk menghindari password)
     const existingUser = await prisma.user.findUnique({
       where: { id: parseInt(id) },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        nama: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     if (!existingUser) {
@@ -461,6 +512,27 @@ export const deleteUser = async (req, res) => {
         success: false,
         message: 'Tidak dapat menonaktifkan akun sendiri.',
       });
+    }
+
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas DELETE (soft delete)
+    const userId = req.user?.id;
+    if (userId) {
+      // Get updated user data untuk afterData
+      const updatedUserAfterSoftDelete = {
+        ...existingUser,
+        isActive: false,
+      };
+      
+      await logActivity(
+        userId,
+        'DELETE',
+        'User',
+        parseInt(id),
+        formatDataForAudit(existingUser, 'User'), // beforeData
+        formatDataForAudit(updatedUserAfterSoftDelete, 'User'), // afterData (soft delete: isActive = false)
+        req,
+        `Menonaktifkan user: ${existingUser.username} (Soft Delete)`
+      );
     }
 
     // Soft delete (set isActive = false)

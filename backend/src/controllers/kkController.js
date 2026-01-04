@@ -37,6 +37,7 @@
 import prisma from "../config/database.js";
 import { validateKK } from "../utils/validators.js";
 import { ERROR_MESSAGES, sendErrorResponse } from "../utils/errorMessages.js";
+import { logActivity, formatDataForAudit } from "../services/auditLogService.js";
 
 /**
  * Get semua Kartu Keluarga dengan pagination dan filter
@@ -59,6 +60,13 @@ export const getAllKK = async (req, res) => {
 
     // Build where clause untuk filter
     const where = {};
+
+    // PHASE 0.2: SOFT DELETE POLICY - Default filter hanya KK aktif
+    // User bisa request semua KK (termasuk non-aktif) dengan query param includeInactive=true
+    const includeInactive = req.query.includeInactive === "true";
+    if (!includeInactive) {
+      where.isActive = true; // Default: hanya tampilkan KK aktif
+    }
 
     // Filter by search (nomor KK atau nama kepala keluarga)
     // Note: MySQL tidak support mode: 'insensitive', jadi pakai contains saja
@@ -631,6 +639,21 @@ export const updateKK = async (req, res) => {
       },
     });
 
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas UPDATE
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "UPDATE",
+        "KartuKeluarga",
+        parseInt(id),
+        formatDataForAudit(existingKK, "KartuKeluarga"), // beforeData
+        formatDataForAudit(updatedKK, "KartuKeluarga"), // afterData
+        req,
+        `Mengupdate Kartu Keluarga: ${updatedKK.nomorKK}`
+      );
+    }
+
     return res.status(200).json({
       success: true,
       message: "Data Kartu Keluarga berhasil diupdate",
@@ -682,14 +705,36 @@ export const deleteKK = async (req, res) => {
       });
     }
 
-    // Delete KK (anggota keluarga akan terhapus otomatis karena cascade)
-    await prisma.kartuKeluarga.delete({
+    // PHASE 0.2: SOFT DELETE POLICY
+    // Kartu Keluarga tidak dihapus, tetapi isActive diubah menjadi false
+    // Prinsip administratif: Data TIDAK dihapus, tetapi DINONAKTIFKAN atau DIUBAH STATUSNYA
+
+    // Update isActive menjadi false (soft delete)
+    const updatedKK = await prisma.kartuKeluarga.update({
       where: { id: parseInt(id) },
+      data: {
+        isActive: false,
+      },
     });
+
+    // WAJIB PEMERINTAH: Audit Log - Catat aktivitas DELETE (soft delete)
+    const userId = req.user?.id;
+    if (userId) {
+      await logActivity(
+        userId,
+        "DELETE",
+        "KartuKeluarga",
+        parseInt(id),
+        formatDataForAudit(existingKK, "KartuKeluarga"), // beforeData
+        formatDataForAudit(updatedKK, "KartuKeluarga"), // afterData (isActive = false)
+        req,
+        `Menghapus Kartu Keluarga (soft delete): ${existingKK.nomorKK} - Status diubah menjadi tidak aktif`
+      );
+    }
 
     return res.status(200).json({
       success: true,
-      message: "Data Kartu Keluarga berhasil dihapus",
+      message: "Data Kartu Keluarga berhasil dihapus (status diubah menjadi tidak aktif)",
     });
   } catch (error) {
     console.error("Delete KK error:", error);
@@ -800,7 +845,8 @@ export const addAnggotaKeluarga = async (req, res) => {
       });
     }
 
-    // Jika penduduk aktif, cek apakah sudah jadi anggota KK lain
+    // MODEL ADMINISTRATIF: Validasi Ketat - Penduduk AKTIF hanya boleh di 1 KK
+    // ATURAN ADMINISTRATIF: Satu penduduk aktif hanya dapat terdaftar di satu Kartu Keluarga
     if (pendudukData.statusKependudukan === "Aktif") {
       const existingAnggotaLain = await prisma.anggotaKeluarga.findFirst({
         where: {
@@ -808,13 +854,20 @@ export const addAnggotaKeluarga = async (req, res) => {
           kartuKeluargaId: { not: parseInt(id) },
           status: "Aktif",
         },
+        include: {
+          kartuKeluarga: {
+            select: {
+              nomorKK: true,
+            },
+          },
+        },
       });
 
       if (existingAnggotaLain) {
         return res.status(400).json({
           success: false,
           message: ERROR_MESSAGES.ONE_PENDUDUK_ONE_KK,
-          details: "Satu penduduk aktif hanya bisa menjadi anggota satu Kartu Keluarga. Jika penduduk perlu pindah KK, hapus dulu dari KK sebelumnya.",
+          details: `Penduduk ini sudah terdaftar di Kartu Keluarga dengan Nomor KK: ${existingAnggotaLain.kartuKeluarga.nomorKK}. Satu penduduk aktif hanya dapat terdaftar di satu Kartu Keluarga. Jika ingin memindahkan, keluarkan dulu dari KK sebelumnya (nomor KK: ${existingAnggotaLain.kartuKeluarga.nomorKK}).`,
         });
       }
     }
@@ -925,9 +978,25 @@ export const removeAnggotaKeluarga = async (req, res) => {
       });
     }
 
-    // PHASE 1.1: Auto-sync nomorKK di Penduduk saat hapus anggota
-    // Hapus anggota dan update nomorKK dalam transaction
-    await prisma.$transaction(async (tx) => {
+    // MODEL ADMINISTRATIF: Auto-downgrade status saat keluar dari KK
+    // ATURAN ADMINISTRATIF: Penduduk AKTIF tidak boleh eksis tanpa KK
+    // Jika penduduk AKTIF dikeluarkan dari KK, status otomatis menjadi PINDAH/BELUM_TERDAFTAR_KK
+    
+    // Get data penduduk untuk cek status
+    const penduduk = await prisma.penduduk.findUnique({
+      where: { id: anggota.pendudukId },
+      select: {
+        id: true,
+        nik: true,
+        nama: true,
+        statusKependudukan: true,
+      },
+    });
+
+    const isStatusAktif = penduduk.statusKependudukan === "Aktif";
+
+    // Hapus anggota, update nomorKK, dan auto-downgrade status (jika perlu) dalam transaction
+    const result = await prisma.$transaction(async (tx) => {
       // 1. Hapus anggota
       await tx.anggotaKeluarga.delete({
         where: { id: parseInt(anggotaId) },
@@ -948,20 +1017,42 @@ export const removeAnggotaKeluarga = async (req, res) => {
         },
       });
 
-      // 3. Update nomorKK di Penduduk
-      // Jika masih ada di KK lain, update dengan nomorKK yang baru
-      // Jika tidak ada lagi, set nomorKK menjadi null
+      // 3. Update nomorKK dan status di Penduduk
+      const updateData = {
+        nomorKK: anggotaLain ? anggotaLain.kartuKeluarga.nomorKK : null,
+      };
+
+      // MODEL ADMINISTRATIF: Auto-downgrade status jika penduduk AKTIF dikeluarkan dari KK
+      if (isStatusAktif && !anggotaLain) {
+        // Tidak ada KK lain, downgrade status menjadi PINDAH
+        updateData.statusKependudukan = "Pindah";
+      }
+
       await tx.penduduk.update({
         where: { id: anggota.pendudukId },
-        data: {
-          nomorKK: anggotaLain ? anggotaLain.kartuKeluarga.nomorKK : null,
-        },
+        data: updateData,
       });
+
+      return {
+        statusChanged: isStatusAktif && !anggotaLain,
+        newStatus: isStatusAktif && !anggotaLain ? "Pindah" : penduduk.statusKependudukan,
+      };
     });
 
+    // Response dengan info perubahan status
     return res.status(200).json({
       success: true,
-      message: "Anggota keluarga berhasil dihapus",
+      message: result.statusChanged
+        ? "Anggota keluarga berhasil dihapus. Status penduduk otomatis diubah menjadi 'Pindah' karena penduduk aktif tidak dapat eksis tanpa Kartu Keluarga."
+        : "Anggota keluarga berhasil dihapus",
+      data: result.statusChanged
+        ? {
+            statusChanged: true,
+            previousStatus: "Aktif",
+            newStatus: result.newStatus,
+            reason: "Penduduk aktif dikeluarkan dari Kartu Keluarga. Status otomatis diubah sesuai aturan administratif.",
+          }
+        : undefined,
     });
   } catch (error) {
     console.error("Remove anggota keluarga error:", error);
