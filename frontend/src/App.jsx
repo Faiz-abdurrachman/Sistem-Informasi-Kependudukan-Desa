@@ -38,8 +38,10 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Penduduk from "./pages/Penduduk.jsx";
 import KartuKeluarga from "./pages/KartuKeluarga.jsx";
 import Surat from "./pages/Surat.jsx";
+import Users from "./pages/Users.jsx";
+import Laporan from "./pages/Laporan.jsx";
 import Navbar from "./components/Navbar.jsx";
-import { isOperatorOrAdmin } from "./utils/roleGuard.js";
+import { isOperatorOrAdmin, isAdmin } from "./utils/roleGuard.js";
 
 /**
  * Protected Route Component
@@ -89,6 +91,35 @@ const OperatorRoute = ({ children }) => {
   }
 
   if (!isOperatorOrAdmin(user)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return children;
+};
+
+/**
+ * Admin Only Route Component
+ * Redirect jika user bukan ADMIN
+ */
+const AdminRoute = ({ children }) => {
+  const { user, isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary-600 border-r-transparent mx-auto"></div>
+          <p className="mt-4 text-sm text-slate-600">Memuat...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isAdmin(user)) {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -156,6 +187,26 @@ function AppContent() {
               element={
                 <OperatorRoute>
                   <Surat />
+                </OperatorRoute>
+              }
+            />
+
+            {/* Admin Only Routes */}
+            <Route
+              path="/users"
+              element={
+                <AdminRoute>
+                  <Users />
+                </AdminRoute>
+              }
+            />
+
+            {/* Operator/Admin Routes - Laporan */}
+            <Route
+              path="/laporan"
+              element={
+                <OperatorRoute>
+                  <Laporan />
                 </OperatorRoute>
               }
             />

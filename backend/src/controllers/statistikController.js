@@ -184,6 +184,40 @@ export const getAllStatistik = async (req, res) => {
       statistikRW = [];
     }
 
+    // PHASE 4.3: Widget data untuk dashboard
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    // Penduduk baru bulan ini
+    const pendudukBaruBulanIni = await prisma.penduduk.count({
+      where: {
+        createdAt: {
+          gte: startOfMonth,
+        },
+      },
+    });
+
+    // Surat dibuat hari ini
+    const suratHariIni = await prisma.surat.count({
+      where: {
+        createdAt: {
+          gte: startOfDay,
+          lte: endOfDay,
+        },
+      },
+    });
+
+    // Penduduk tanpa KK (aktif tapi tidak ada di AnggotaKeluarga)
+    const pendudukTanpaKK = await prisma.penduduk.count({
+      where: {
+        statusKependudukan: 'Aktif',
+        nomorKK: null,
+      },
+    });
+
     // Format statistik
     const statistik = {
       totalPenduduk,
@@ -214,6 +248,12 @@ export const getAllStatistik = async (req, res) => {
         rw: s.rw,
         jumlah: s._count.id,
       })),
+      // PHASE 4.3: Widget data
+      widgets: {
+        pendudukBaruBulanIni,
+        suratHariIni,
+        pendudukTanpaKK,
+      },
     };
 
     return res.status(200).json({

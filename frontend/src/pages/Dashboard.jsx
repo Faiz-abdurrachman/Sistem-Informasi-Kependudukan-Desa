@@ -201,6 +201,70 @@ const Dashboard = () => {
         </div>
       )}
 
+      {/* PHASE 4.5: Widget Baru */}
+      {statistik?.widgets && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="card p-6 bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-blue-600 mb-1">
+                  Penduduk Baru Bulan Ini
+                </p>
+                <p className="text-3xl font-bold text-blue-900">
+                  {(statistik.widgets.pendudukBaruBulanIni || 0).toLocaleString("id-ID")}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="card p-6 bg-gradient-to-br from-green-50 to-green-100 border border-green-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-green-600 mb-1">
+                  Surat Dibuat Hari Ini
+                </p>
+                <p className="text-3xl font-bold text-green-900">
+                  {(statistik.widgets.suratHariIni || 0).toLocaleString("id-ID")}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div className="card p-6 bg-gradient-to-br from-red-50 to-red-100 border border-red-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-red-600 mb-1">
+                  Penduduk Tanpa KK
+                </p>
+                <p className="text-3xl font-bold text-red-900">
+                  {(statistik.widgets.pendudukTanpaKK || 0).toLocaleString("id-ID")}
+                </p>
+                {statistik.widgets.pendudukTanpaKK > 0 && (
+                  <p className="text-xs text-red-600 mt-1">
+                    Perlu perhatian
+                  </p>
+                )}
+              </div>
+              <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Jenis Kelamin Chart */}

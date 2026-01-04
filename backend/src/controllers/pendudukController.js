@@ -38,6 +38,7 @@ import {
   validateTanggalLahir,
   calculateUmur,
 } from "../utils/validators.js";
+import { ERROR_MESSAGES, sendErrorResponse } from "../utils/errorMessages.js";
 
 /**
  * Get semua penduduk dengan pagination dan filter
@@ -291,7 +292,7 @@ export const createPenduduk = async (req, res) => {
     if (!validateNIK(nik)) {
       return res.status(400).json({
         success: false,
-        message: "NIK harus 16 digit angka",
+        message: "NIK harus 16 digit angka. Pastikan NIK yang Anda masukkan benar.",
       });
     }
 
@@ -299,7 +300,7 @@ export const createPenduduk = async (req, res) => {
     if (!validateTanggalLahir(tanggalLahir)) {
       return res.status(400).json({
         success: false,
-        message: "Tanggal lahir tidak valid atau tidak boleh di masa depan",
+        message: "Tanggal lahir tidak valid. Tanggal lahir tidak boleh di masa depan dan harus dalam format yang benar (YYYY-MM-DD).",
       });
     }
 
@@ -311,7 +312,7 @@ export const createPenduduk = async (req, res) => {
     if (existingPenduduk) {
       return res.status(400).json({
         success: false,
-        message: "NIK sudah terdaftar. NIK harus unique.",
+        message: `NIK ${nik} sudah terdaftar di sistem untuk penduduk: ${existingPenduduk.nama}. NIK harus unik dan tidak boleh duplikat.`,
       });
     }
 
@@ -349,20 +350,12 @@ export const createPenduduk = async (req, res) => {
     });
   } catch (error) {
     console.error("Create penduduk error:", error);
-
-    // Handle Prisma unique constraint error
-    if (error.code === "P2002") {
-      return res.status(400).json({
-        success: false,
-        message: "NIK sudah terdaftar. NIK harus unique.",
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: "Terjadi kesalahan saat menambahkan data penduduk.",
-      error: process.env.NODE_ENV === "development" ? error.message : undefined,
-    });
+    return sendErrorResponse(
+      res,
+      error,
+      500,
+      "Terjadi kesalahan saat menambahkan data penduduk. Silakan coba lagi atau hubungi administrator jika masalah berlanjut."
+    );
   }
 };
 
@@ -425,6 +418,25 @@ export const updatePenduduk = async (req, res) => {
         });
       }
       updateData.tanggalLahir = new Date(updateData.tanggalLahir);
+    }
+
+    // PHASE 1.2: Validasi penduduk aktif harus jadi anggota minimal 1 KK
+    const newStatus = updateData.statusKependudukan || existingPenduduk.statusKependudukan;
+    if (newStatus === "Aktif") {
+      const anggotaKK = await prisma.anggotaKeluarga.findFirst({
+        where: {
+          pendudukId: parseInt(id),
+          status: "Aktif",
+        },
+      });
+
+      if (!anggotaKK) {
+        return res.status(400).json({
+          success: false,
+          message: ERROR_MESSAGES.PENDUDUK_AKTIF_MUST_HAVE_KK,
+          details: "Silakan tambahkan penduduk ke Kartu Keluarga terlebih dahulu sebelum mengubah status menjadi 'Aktif'.",
+        });
+      }
     }
 
     // Update penduduk

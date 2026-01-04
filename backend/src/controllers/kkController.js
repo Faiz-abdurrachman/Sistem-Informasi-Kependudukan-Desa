@@ -36,6 +36,7 @@
 
 import prisma from "../config/database.js";
 import { validateKK } from "../utils/validators.js";
+import { ERROR_MESSAGES, sendErrorResponse } from "../utils/errorMessages.js";
 
 /**
  * Get semua Kartu Keluarga dengan pagination dan filter
@@ -311,6 +312,30 @@ export const createKK = async (req, res) => {
       });
     }
 
+    // PHASE 5.2: Validasi kepala keluarga tidak boleh jadi anggota KK lain
+    if (kepalaKeluarga.statusKependudukan === "Aktif") {
+      const existingAnggota = await prisma.anggotaKeluarga.findFirst({
+        where: {
+          pendudukId: parseInt(kepalaKeluargaId),
+          status: "Aktif",
+        },
+        include: {
+          kartuKeluarga: {
+            select: {
+              nomorKK: true,
+            },
+          },
+        },
+      });
+
+      if (existingAnggota) {
+        return res.status(400).json({
+          success: false,
+          message: `Penduduk yang dipilih sebagai kepala keluarga sudah terdaftar sebagai anggota Kartu Keluarga ${existingAnggota.kartuKeluarga.nomorKK}. Kepala keluarga tidak boleh menjadi anggota Kartu Keluarga lain.`,
+        });
+      }
+    }
+
     // Create KK dengan anggota keluarga dalam transaction
     const newKK = await prisma.$transaction(async (tx) => {
       // 1. Create KK
@@ -372,12 +397,40 @@ export const createKK = async (req, res) => {
           where: {
             id: { in: anggotaIds.map((id) => parseInt(id)) },
           },
+          select: {
+            id: true,
+            statusKependudukan: true,
+          },
         });
 
         if (anggotaPenduduk.length !== anggotaIds.length) {
           throw new Error(
             "Beberapa data anggota keluarga tidak ditemukan. Pastikan semua penduduk sudah terdaftar."
           );
+        }
+
+        // PHASE 1.1 & 5.1: Validasi penduduk aktif tidak boleh jadi anggota KK lain
+        const pendudukAktif = anggotaPenduduk.filter(
+          (p) => p.statusKependudukan === "Aktif"
+        );
+        if (pendudukAktif.length > 0) {
+          const existingAnggota = await tx.anggotaKeluarga.findMany({
+            where: {
+              pendudukId: { in: pendudukAktif.map((p) => p.id) },
+              status: "Aktif",
+            },
+          });
+
+          if (existingAnggota.length > 0) {
+            const pendudukIds = existingAnggota.map((a) => a.pendudukId);
+            const pendudukNames = await tx.penduduk.findMany({
+              where: { id: { in: pendudukIds } },
+              select: { nama: true },
+            });
+            throw new Error(
+              `Beberapa penduduk aktif sudah terdaftar sebagai anggota Kartu Keluarga lain: ${pendudukNames.map((p) => p.nama).join(", ")}`
+            );
+          }
         }
 
         // Tambah anggota keluarga
@@ -389,7 +442,25 @@ export const createKK = async (req, res) => {
             status: anggota.status || "Aktif",
           })),
         });
+
+        // PHASE 1.1: Auto-sync nomorKK untuk semua anggota yang ditambahkan
+        await tx.penduduk.updateMany({
+          where: {
+            id: { in: anggotaIds.map((id) => parseInt(id)) },
+          },
+          data: {
+            nomorKK: kk.nomorKK,
+          },
+        });
       }
+
+      // PHASE 1.1: Auto-sync nomorKK untuk kepala keluarga
+      await tx.penduduk.update({
+        where: { id: parseInt(kepalaKeluargaId) },
+        data: {
+          nomorKK: kk.nomorKK,
+        },
+      });
 
       // 4. Get KK dengan semua anggota
       return await tx.kartuKeluarga.findUnique({
@@ -506,6 +577,31 @@ export const updateKK = async (req, res) => {
           success: false,
           message: "Data kepala keluarga tidak ditemukan",
         });
+      }
+
+      // PHASE 5.2: Validasi kepala keluarga tidak boleh jadi anggota KK lain
+      if (kepalaKeluarga.statusKependudukan === "Aktif") {
+        const existingAnggota = await prisma.anggotaKeluarga.findFirst({
+          where: {
+            pendudukId: parseInt(updateData.kepalaKeluargaId),
+            kartuKeluargaId: { not: parseInt(id) },
+            status: "Aktif",
+          },
+          include: {
+            kartuKeluarga: {
+              select: {
+                nomorKK: true,
+              },
+            },
+          },
+        });
+
+        if (existingAnggota) {
+          return res.status(400).json({
+            success: false,
+            message: `Penduduk yang dipilih sebagai kepala keluarga sudah terdaftar sebagai anggota Kartu Keluarga ${existingAnggota.kartuKeluarga.nomorKK}. Kepala keluarga tidak boleh menjadi anggota Kartu Keluarga lain.`,
+          });
+        }
       }
     }
 
@@ -674,30 +770,92 @@ export const addAnggotaKeluarga = async (req, res) => {
       });
     }
 
-    // Tambah anggota
-    const anggota = await prisma.anggotaKeluarga.create({
-      data: {
-        kartuKeluargaId: parseInt(id),
-        pendudukId: parseInt(pendudukId),
-        hubungan,
-        status,
+    // PHASE 1.1: Auto-sync nomorKK di Penduduk saat tambah anggota
+    // Validasi: Cek apakah penduduk sudah jadi anggota KK lain (untuk penduduk aktif)
+    const pendudukData = await prisma.penduduk.findUnique({
+      where: { id: parseInt(pendudukId) },
+      select: {
+        id: true,
+        nik: true,
+        nama: true,
+        statusKependudukan: true,
       },
-      include: {
-        penduduk: {
-          select: {
-            id: true,
-            nik: true,
-            nama: true,
+    });
+
+    // PHASE 5.2: Validasi kepala keluarga tidak boleh jadi anggota KK lain
+    const isKepalaKeluarga = await prisma.kartuKeluarga.findFirst({
+      where: {
+        kepalaKeluargaId: parseInt(pendudukId),
+      },
+      select: {
+        nomorKK: true,
+      },
+    });
+
+    if (isKepalaKeluarga) {
+      return res.status(400).json({
+        success: false,
+        message: ERROR_MESSAGES.KEPALA_KELUARGA_CANNOT_BE_MEMBER,
+        details: `Penduduk yang dipilih adalah kepala keluarga dari Kartu Keluarga ${isKepalaKeluarga.nomorKK}. Jika ingin memindahkan, ubah kepala keluarga di KK tersebut terlebih dahulu.`,
+      });
+    }
+
+    // Jika penduduk aktif, cek apakah sudah jadi anggota KK lain
+    if (pendudukData.statusKependudukan === "Aktif") {
+      const existingAnggotaLain = await prisma.anggotaKeluarga.findFirst({
+        where: {
+          pendudukId: parseInt(pendudukId),
+          kartuKeluargaId: { not: parseInt(id) },
+          status: "Aktif",
+        },
+      });
+
+      if (existingAnggotaLain) {
+        return res.status(400).json({
+          success: false,
+          message: ERROR_MESSAGES.ONE_PENDUDUK_ONE_KK,
+          details: "Satu penduduk aktif hanya bisa menjadi anggota satu Kartu Keluarga. Jika penduduk perlu pindah KK, hapus dulu dari KK sebelumnya.",
+        });
+      }
+    }
+
+    // Tambah anggota dan auto-sync nomorKK dalam transaction
+    const result = await prisma.$transaction(async (tx) => {
+      // 1. Tambah anggota
+      const anggota = await tx.anggotaKeluarga.create({
+        data: {
+          kartuKeluargaId: parseInt(id),
+          pendudukId: parseInt(pendudukId),
+          hubungan,
+          status,
+        },
+        include: {
+          penduduk: {
+            select: {
+              id: true,
+              nik: true,
+              nama: true,
+            },
           },
         },
-      },
+      });
+
+      // 2. Auto-sync nomorKK di Penduduk
+      await tx.penduduk.update({
+        where: { id: parseInt(pendudukId) },
+        data: {
+          nomorKK: kk.nomorKK,
+        },
+      });
+
+      return anggota;
     });
 
     return res.status(201).json({
       success: true,
       message: "Anggota keluarga berhasil ditambahkan",
       data: {
-        anggota,
+        anggota: result,
       },
     });
   } catch (error) {
@@ -767,9 +925,38 @@ export const removeAnggotaKeluarga = async (req, res) => {
       });
     }
 
-    // Hapus anggota
-    await prisma.anggotaKeluarga.delete({
-      where: { id: parseInt(anggotaId) },
+    // PHASE 1.1: Auto-sync nomorKK di Penduduk saat hapus anggota
+    // Hapus anggota dan update nomorKK dalam transaction
+    await prisma.$transaction(async (tx) => {
+      // 1. Hapus anggota
+      await tx.anggotaKeluarga.delete({
+        where: { id: parseInt(anggotaId) },
+      });
+
+      // 2. Cek apakah penduduk masih jadi anggota KK lain
+      const anggotaLain = await tx.anggotaKeluarga.findFirst({
+        where: {
+          pendudukId: anggota.pendudukId,
+          status: "Aktif",
+        },
+        include: {
+          kartuKeluarga: {
+            select: {
+              nomorKK: true,
+            },
+          },
+        },
+      });
+
+      // 3. Update nomorKK di Penduduk
+      // Jika masih ada di KK lain, update dengan nomorKK yang baru
+      // Jika tidak ada lagi, set nomorKK menjadi null
+      await tx.penduduk.update({
+        where: { id: anggota.pendudukId },
+        data: {
+          nomorKK: anggotaLain ? anggotaLain.kartuKeluarga.nomorKK : null,
+        },
+      });
     });
 
     return res.status(200).json({

@@ -38,6 +38,8 @@ import suratRoutes from "./routes/suratRoutes.js";
 import statistikRoutes from "./routes/statistikRoutes.js";
 import importRoutes from "./routes/importRoutes.js";
 import trendRoutes from "./routes/trendRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import laporanRoutes from "./routes/laporanRoutes.js";
 
 // Load environment variables
 dotenv.config();
@@ -95,10 +97,12 @@ app.get("/", (req, res) => {
     endpoints: {
       health: "/api/health",
       auth: "/api/auth",
+      users: "/api/users",
       penduduk: "/api/penduduk",
       kk: "/api/kk",
       surat: "/api/surat",
       statistik: "/api/statistik",
+      laporan: "/api/laporan",
       import: "/api/import",
       trend: "/api/trend",
     },
@@ -123,10 +127,12 @@ app.get("/api/health", (req, res) => {
  * Semua API endpoint diorganisir per feature
  */
 app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/penduduk", pendudukRoutes);
 app.use("/api/kk", kkRoutes);
 app.use("/api/surat", suratRoutes);
 app.use("/api/statistik", statistikRoutes);
+app.use("/api/laporan", laporanRoutes);
 app.use("/api/import", importRoutes);
 app.use("/api/trend", trendRoutes);
 

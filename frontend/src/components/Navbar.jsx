@@ -41,6 +41,18 @@ const Navbar = () => {
       icon: "surat",
       roles: ["ADMIN", "OPERATOR"],
     },
+    {
+      path: "/laporan",
+      label: "Laporan",
+      icon: "laporan",
+      roles: ["ADMIN", "OPERATOR"],
+    },
+    {
+      path: "/users",
+      label: "User Management",
+      icon: "users",
+      roles: ["ADMIN"],
+    },
   ];
 
   const filteredNavItems = navItems.filter((item) => {
