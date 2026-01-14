@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Build outputs
+dist/
+build/
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Uploads
+uploads/
+temp/
+
+# Database
+*.sqlite
+*.db
+
+# Prisma migrations (exclude, but keep schema.prisma)
+prisma/migrations/
+
+# Documentation files (exclude all .md except README.md)
+*.md
+!README.md
+!dummy_data/README.md
+!ANALISIS-DAN-RENCANA-PERBAIKAN.md
+!ALUR-KERJA-*.md
+!DIAGRAM-*.md
+!ROLE-PERMISSIONS.md
+
+# Exclude specific documentation files (backup pattern)
+DOKUMENTASI_PRESENTASI_LENGKAP.md
+AUTO_ADD_KK_FEATURE_DOCS.md
+CARA_CLEAR_DATABASE.md
+CARA_IMPORT_DATA.md
+CHECKPOINT.md
+EXPORT_FEATURE_DOCS.md
+FEATURES_PLAN.md
+FEATURES_RECOMMENDATIONS.md
+FINAL_COMPLETE_DOCUMENTATION.md
+FITUR_BARU_GUIDE.md
+FIX_ANGGOTA_KK_DOCS.md
+FIX_IMPORT_KK_ERROR.md
+IMPORT_FEATURE_DOCS.md
+IMPORT_RELASI_AUTO_EXPLANATION.md
+NOMORKK_TRACKING_FEATURE_DOCS.md
+PREVIEW_PRINT_SURAT_DOCS.md
+RELASI_PENDUDUK_KK_EXPLANATION.md
+SOLUSI_ERROR_IMPORT.md
+TROUBLESHOOTING_IMPORT_ERROR.md
+UI_UX_IMPROVEMENT_PROMPT.md
+super_prompt.md
+ALL_FEATURES_COMPLETE_DOCS.md
+backend/FIX_PHPMYADMIN.md
+
+# Prompt chat folder (tidak penting untuk production)
+prompt chat/
+
+# Shortcut files
+*.lnk
+
+# Backup files
+*.bak
+*.backup
+

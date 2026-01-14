@@ -1,0 +1,242 @@
+// ============================================
+// PRISMA SCHEMA - SISTEM INFORMASI KEPENDUDUKAN DESA
+// ============================================
+// 
+// DESKRIPSI:
+// Schema database untuk mengelola data kependudukan desa
+// termasuk user authentication, data penduduk, kartu keluarga,
+// dan surat-surat administrasi desa.
+//
+// ARSITEKTUR:
+// - User: Tabel untuk autentikasi (Admin, Operator, Publik)
+// - Penduduk: Data penduduk dengan validasi NIK
+// - KartuKeluarga: Data KK dengan relasi ke Penduduk
+// - AnggotaKeluarga: Relasi many-to-many antara KK dan Penduduk
+// - Surat: Surat-surat administrasi desa
+// - Statistik: Cache statistik untuk performa
+//
+// HUMAN TOUCH:
+// - Validasi NIK 16 digit
+// - Validasi KK 16 digit
+// - Penomoran surat otomatis
+// - Tracking perubahan data (createdAt, updatedAt)
+//
+// ============================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MODEL: USER (AUTHENTICATION)
+// ============================================
+// Tabel untuk menyimpan data user yang dapat mengakses sistem
+// Role: ADMIN (full access), OPERATOR (CRUD data), PUBLIK (read only)
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique @db.VarChar(50)
+  email     String   @unique @db.VarChar(100)
+  password  String   @db.VarChar(255) // Hashed dengan bcrypt
+  role      Role     @default(PUBLIK) // ADMIN, OPERATOR, PUBLIK
+  nama      String   @db.VarChar(100)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relasi ke surat (untuk tracking siapa yang membuat surat)
+  surat     Surat[]
+
+  // Relasi ke audit log (untuk tracking aktivitas user)
+  auditLog  AuditLog[]
+
+  @@index([username])
+  @@index([email])
+  @@map("users")
+}
+
+// ============================================
+// ENUM: ROLE
+// ============================================
+// Definisi role untuk Role-Based Access Control (RBAC)
+enum Role {
+  ADMIN    // Full access: CRUD semua data + manage user
+  OPERATOR // CRUD data penduduk, KK, surat
+  PUBLIK   // Read only: lihat data publik saja
+}
+
+// ============================================
+// MODEL: PENDUDUK
+// ============================================
+// Tabel utama untuk menyimpan data penduduk desa
+// HUMAN TOUCH: Validasi NIK harus 16 digit, unique
+model Penduduk {
+  id            Int      @id @default(autoincrement())
+  nik           String   @unique @db.VarChar(16) // 16 digit, wajib unique
+  nama          String   @db.VarChar(100)
+  tempatLahir   String   @db.VarChar(50)
+  tanggalLahir  DateTime @db.Date
+  jenisKelamin  String   @db.VarChar(10) // Laki-laki / Perempuan
+  agama         String   @db.VarChar(50)
+  pendidikan    String   @db.VarChar(50)
+  pekerjaan     String   @db.VarChar(100)
+  statusPerkawinan String @db.VarChar(20) // Belum Kawin, Kawin, Cerai Hidup, Cerai Mati
+  kewarganegaraan String @default("WNI") @db.VarChar(10)
+  alamat        String   @db.Text
+  rt            String   @db.VarChar(3)
+  rw            String   @db.VarChar(3)
+  desa           String   @db.VarChar(100)
+  kecamatan      String   @db.VarChar(100)
+  kabupaten      String   @db.VarChar(100)
+  provinsi       String   @db.VarChar(100)
+  golonganDarah  String?  @db.VarChar(2) // A, B, AB, O
+  statusKependudukan String @default("Aktif") @db.VarChar(20) // Aktif, Meninggal, Pindah
+  nomorKK       String?  @db.VarChar(16) // Nomor KK untuk tracking (opsional, bisa null)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relasi ke Kartu Keluarga (sebagai kepala keluarga)
+  kepalaKeluarga KartuKeluarga[]
+  
+  // Relasi sebagai anggota keluarga
+  anggotaKeluarga AnggotaKeluarga[]
+  
+  // Relasi ke surat (jika penduduk terkait dengan surat)
+  surat         Surat[]
+
+  @@index([nik])
+  @@index([nama])
+  @@index([statusKependudukan])
+  @@index([nomorKK]) // Index untuk tracking nomorKK
+  @@map("penduduk")
+}
+
+// ============================================
+// MODEL: KARTU KELUARGA (KK)
+// ============================================
+// Tabel untuk menyimpan data Kartu Keluarga
+// HUMAN TOUCH: Validasi nomor KK 16 digit, unique
+// Setiap KK punya 1 kepala keluarga dan bisa punya banyak anggota
+model KartuKeluarga {
+  id            Int      @id @default(autoincrement())
+  nomorKK       String   @unique @db.VarChar(16) // 16 digit, wajib unique
+  kepalaKeluargaId Int
+  kepalaKeluarga Penduduk @relation(fields: [kepalaKeluargaId], references: [id], onDelete: Restrict)
+  alamat        String   @db.Text
+  rt            String   @db.VarChar(3)
+  rw            String   @db.VarChar(3)
+  desa          String   @db.VarChar(100)
+  kecamatan     String   @db.VarChar(100)
+  kabupaten     String   @db.VarChar(100)
+  provinsi      String   @db.VarChar(100)
+  kodePos       String?  @db.VarChar(10)
+  isActive      Boolean  @default(true) // SOFT DELETE: true = aktif, false = dinonaktifkan
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relasi ke anggota keluarga (many-to-many dengan Penduduk)
+  anggotaKeluarga AnggotaKeluarga[]
+
+  @@index([nomorKK])
+  @@index([kepalaKeluargaId])
+  @@index([isActive])
+  @@map("kartu_keluarga")
+}
+
+// ============================================
+// MODEL: ANGGOTA KELUARGA
+// ============================================
+// Tabel relasi many-to-many antara KartuKeluarga dan Penduduk
+// Menyimpan informasi hubungan keluarga (hubungan dengan kepala keluarga)
+model AnggotaKeluarga {
+  id            Int      @id @default(autoincrement())
+  kartuKeluargaId Int
+  kartuKeluarga KartuKeluarga @relation(fields: [kartuKeluargaId], references: [id], onDelete: Cascade)
+  pendudukId    Int
+  penduduk      Penduduk @relation(fields: [pendudukId], references: [id], onDelete: Cascade)
+  hubungan      String   @db.VarChar(50) // Kepala Keluarga, Istri, Anak, Menantu, Cucu, dll
+  status        String   @default("Aktif") @db.VarChar(20) // Aktif, Meninggal, Pindah
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Unique constraint: satu penduduk tidak bisa jadi anggota KK yang sama 2x
+  @@unique([kartuKeluargaId, pendudukId])
+  @@index([kartuKeluargaId])
+  @@index([pendudukId])
+  @@map("anggota_keluarga")
+}
+
+// ============================================
+// MODEL: SURAT
+// ============================================
+// Tabel untuk menyimpan surat-surat administrasi desa
+// HUMAN TOUCH: Penomoran otomatis, penandatanganan pejabat
+model Surat {
+  id            Int      @id @default(autoincrement())
+  nomorSurat    String   @unique @db.VarChar(50) // Format: 001/SKD/2024
+  jenisSurat    String   @db.VarChar(50) // Keterangan Domisili, Keterangan Usaha, dll
+  pendudukId    Int?     // Penduduk yang terkait dengan surat
+  penduduk      Penduduk? @relation(fields: [pendudukId], references: [id], onDelete: SetNull)
+  userId        Int      // User yang membuat surat
+  user          User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  keterangan    String?  @db.Text
+  penandatangan String   @db.VarChar(100) // Nama pejabat yang menandatangani
+  jabatan       String   @db.VarChar(100) // Jabatan penandatangan (Kepala Desa, Sekretaris Desa)
+  tanggalSurat  DateTime @default(now())
+  filePath      String?  @db.VarChar(255) // Path file surat jika di-generate PDF
+  status        String   @default("Draft") @db.VarChar(20) // Draft, Selesai, Dicetak
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([nomorSurat])
+  @@index([jenisSurat])
+  @@index([pendudukId])
+  @@index([userId])
+  @@map("surat")
+}
+
+// ============================================
+// MODEL: STATISTIK (CACHE)
+// ============================================
+// Tabel untuk cache statistik kependudukan
+// Meningkatkan performa dengan menghindari query kompleks berulang
+model Statistik {
+  id            Int      @id @default(autoincrement())
+  jenis         String   @unique @db.VarChar(50) // total_penduduk, total_kk, dll
+  nilai         Int      @default(0)
+  keterangan    String?  @db.Text
+  updatedAt     DateTime @updatedAt
+
+  @@map("statistik")
+}
+
+// ============================================
+// MODEL: AUDIT LOG (WAJIB PEMERINTAH)
+// ============================================
+// Tabel untuk mencatat semua aktivitas perubahan data
+// WAJIB untuk sistem pemerintahan: akuntabilitas & audit trail
+// Mencatat: Siapa, Kapan, Apa yang diubah, Before/After
+model AuditLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  aksi        String   @db.VarChar(20)  // CREATE, UPDATE, DELETE, VIEW
+  entity      String   @db.VarChar(50)  // Penduduk, KartuKeluarga, Surat, User
+  entityId    Int?
+  beforeData  Json?    // Data sebelum (untuk UPDATE)
+  afterData   Json?    // Data setelah
+  ipAddress   String?  @db.VarChar(45)
+  userAgent   String?  @db.Text
+  keterangan  String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@map("audit_log")
+}
+
