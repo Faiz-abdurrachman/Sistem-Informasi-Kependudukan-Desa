@@ -1,336 +1,403 @@
 # Sistem Informasi Kependudukan Desa (SIKD)
 
-Sistem informasi kependudukan desa yang dibangun dengan teknologi modern dan standar profesional untuk keperluan skripsi, PKL, atau project client desa.
+Sistem informasi kependudukan desa berbasis web yang dibangun dengan arsitektur modern dan standar enterprise. Aplikasi ini dirancang untuk mengelola data penduduk, kartu keluarga, dan administrasi surat menyurat di tingkat desa dengan fokus pada keamanan, skalabilitas, dan kemudahan penggunaan.
 
-## 📋 Daftar Isi
+---
+
+## Daftar Isi
 
 - [Fitur Utama](#fitur-utama)
-- [Tech Stack](#tech-stack)
-- [Struktur Project](#struktur-project)
-- [Instalasi & Setup](#instalasi--setup)
-- [Cara Menjalankan](#cara-menjalankan)
+- [Arsitektur Sistem](#arsitektur-sistem)
+- [Kebutuhan Sistem](#kebutuhan-sistem)
+- [Instalasi dan Konfigurasi](#instalasi-dan-konfigurasi)
+  - [Opsi A: Windows dengan Laragon](#opsi-a-windows-dengan-laragon)
+  - [Opsi B: Linux/macOS dengan Docker](#opsi-b-linuxmacos-dengan-docker)
+- [Menjalankan Aplikasi](#menjalankan-aplikasi)
 - [Dokumentasi API](#dokumentasi-api)
-- [Human Touch Features](#human-touch-features)
-- [Keamanan](#keamanan)
-- [Troubleshooting](#troubleshooting)
-- [📚 Dokumentasi Lengkap](#-dokumentasi-lengkap)
-
-## ✨ Fitur Utama
-
-### 1. Authentication & Authorization
-
-- ✅ JWT Authentication
-- ✅ Role-Based Access Control (RBAC)
-- ✅ 3 Level Role: ADMIN, OPERATOR, PUBLIK
-- ✅ Protected Routes
-
-### 2. Data Kependudukan
-
-- ✅ CRUD Data Penduduk
-- ✅ Validasi NIK 16 digit (Human Touch)
-- ✅ Validasi tanggal lahir
-- ✅ Status kependudukan (Aktif, Meninggal, Pindah)
-
-### 3. Kartu Keluarga
-
-- ✅ CRUD Kartu Keluarga
-- ✅ Validasi nomor KK 16 digit (Human Touch)
-- ✅ Relasi kepala keluarga dan anggota keluarga
-- ✅ Manajemen anggota keluarga
-
-### 4. Surat Administrasi
-
-- ✅ Pembuatan surat otomatis
-- ✅ Penomoran surat otomatis sesuai format desa (Human Touch)
-- ✅ Format: NOMOR/JENIS/TAHUN (contoh: 001/SKD/2024)
-- ✅ Tracking status surat (Draft, Selesai, Dicetak)
-- ✅ Penandatanganan pejabat
-
-### 5. Import Data
-
-- ✅ Import data penduduk dari CSV
-- ✅ Validasi data CSV
-- ✅ Error reporting per baris
-
-### 6. Statistik & Dashboard
-
-- ✅ Dashboard statistik kependudukan
-- ✅ Statistik per jenis kelamin
-- ✅ Statistik per status kependudukan
-- ✅ Statistik per agama, pendidikan, pekerjaan
-- ✅ Statistik per RT/RW
-
-## 🛠 Tech Stack
-
-### Backend
-
-- **Node.js** + **Express.js** - REST API
-- **Prisma** - ORM untuk MySQL
-- **MySQL** - Database (Laragon)
-- **JWT** - Authentication
-- **bcrypt** - Password hashing
-- **express-validator** - Input validation
-- **multer** - File upload
-- **csv-parser** - CSV parsing
-
-### Frontend
-
-- **React.js** - UI Framework
-- **Vite** - Build tool
-- **Tailwind CSS** - Styling
-- **React Router** - Routing
-- **Axios** - HTTP client
-- **React Hot Toast** - Notifications
-
-### Development Tools
-
-- **Laragon** - Local server (Apache + MySQL)
-- **Nodemon** - Auto-reload backend
-- **Prisma Studio** - Database GUI
-
-## 📁 Struktur Project
-
-```
-sikd/
-├── backend/                 # Backend Express.js
-│   ├── src/
-│   │   ├── app.js          # Express app configuration
-│   │   ├── server.js       # Server entry point
-│   │   ├── config/         # Configuration files
-│   │   │   ├── database.js # Prisma client
-│   │   │   └── jwt.js      # JWT config
-│   │   ├── middleware/     # Express middleware
-│   │   │   ├── authMiddleware.js
-│   │   │   └── roleMiddleware.js
-│   │   ├── controllers/    # Route controllers
-│   │   │   ├── authController.js
-│   │   │   ├── pendudukController.js
-│   │   │   ├── kkController.js
-│   │   │   ├── suratController.js
-│   │   │   ├── statistikController.js
-│   │   │   └── importController.js
-│   │   ├── routes/         # API routes
-│   │   │   ├── authRoutes.js
-│   │   │   ├── pendudukRoutes.js
-│   │   │   ├── kkRoutes.js
-│   │   │   ├── suratRoutes.js
-│   │   │   ├── statistikRoutes.js
-│   │   │   └── importRoutes.js
-│   │   ├── services/        # Business logic
-│   │   │   └── suratGenerator.js
-│   │   └── utils/          # Utility functions
-│   │       ├── validators.js
-│   │       └── csvParser.js
-│   ├── prisma/
-│   │   └── schema.prisma   # Database schema
-│   ├── package.json
-│   └── .env.example
-│
-├── frontend/                # Frontend React.js
-│   ├── src/
-│   │   ├── api/
-│   │   │   └── axiosInstance.js
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   └── Modal.jsx
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx
-│   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Penduduk.jsx
-│   │   │   ├── KartuKeluarga.jsx
-│   │   │   └── Surat.jsx
-│   │   ├── utils/
-│   │   │   └── roleGuard.js
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── package.json
-│   └── vite.config.js
-│
-└── README.md
-```
-
-## 🚀 Instalasi & Setup
-
-> **Pilih metode yang sesuai dengan sistem operasi kamu:**
->
-> - 🪟 **Windows**: Gunakan [Laragon](#opsi-a-windows--laragon)
-> - 🐧 **Linux/macOS**: Gunakan [Docker](#opsi-b-linuxmacos--docker) ✨ Recommended!
+- [Fitur Keamanan](#fitur-keamanan)
+- [Struktur Project](#struktur-project)
+- [Pemecahan Masalah](#pemecahan-masalah)
+- [Dokumentasi Tambahan](#dokumentasi-tambahan)
 
 ---
 
-### Prerequisites (Semua Platform)
+## Fitur Utama
 
-| Software    | Versi | Cara Cek         |
-| ----------- | ----- | ---------------- |
-| **Node.js** | v18+  | `node --version` |
-| **npm**     | v8+   | `npm --version`  |
-| **Git**     | Any   | `git --version`  |
+### Manajemen Data Kependudukan
 
-**Download Node.js:** https://nodejs.org/
+| Fitur              | Deskripsi                                              |
+| ------------------ | ------------------------------------------------------ |
+| CRUD Penduduk      | Kelola data penduduk dengan validasi NIK 16 digit      |
+| Kartu Keluarga     | Manajemen KK dengan relasi kepala dan anggota keluarga |
+| Surat Administrasi | Pembuatan surat otomatis dengan penomoran resmi        |
+| Import Data        | Import data penduduk dari file CSV dengan validasi     |
+| Statistik          | Dashboard statistik kependudukan dengan visualisasi    |
+
+### Sistem Autentikasi dan Otorisasi
+
+| Fitur                     | Deskripsi                                             |
+| ------------------------- | ----------------------------------------------------- |
+| JWT Authentication        | Autentikasi berbasis token dengan masa berlaku 7 hari |
+| Role-Based Access Control | Tiga level akses: ADMIN, OPERATOR, PUBLIK             |
+| Rate Limiting             | Perlindungan terhadap brute force attack              |
+| Security Headers          | Konfigurasi keamanan HTTP dengan Helmet.js            |
+
+### Fitur Administratif
+
+| Fitur                    | Deskripsi                                        |
+| ------------------------ | ------------------------------------------------ |
+| Penomoran Surat Otomatis | Format: NOMOR/JENIS/TAHUN (contoh: 001/SKD/2024) |
+| Audit Log                | Pencatatan aktivitas pengguna untuk keamanan     |
+| Soft Delete              | Penghapusan data dengan pemulihan                |
+| Export Data              | Export ke PDF dan Excel                          |
 
 ---
 
-## OPSI A: Windows + Laragon
+## Arsitektur Sistem
 
-### A1. Install Laragon
+### Technology Stack
 
-1. Download: https://laragon.org/download/
-2. Install dan jalankan Laragon
-3. Start MySQL dari panel Laragon
+**Backend**
 
-### A2. Create Database
+| Teknologi          | Fungsi              |
+| ------------------ | ------------------- |
+| Node.js v18+       | Runtime JavaScript  |
+| Express.js         | Framework REST API  |
+| Prisma             | ORM untuk MySQL     |
+| MySQL 8.0          | Database relasional |
+| JWT                | Token autentikasi   |
+| bcrypt             | Enkripsi password   |
+| Helmet.js          | Security headers    |
+| express-rate-limit | Rate limiting       |
 
-```sql
--- Klik kanan Laragon > MySQL > Open HeidiSQL
-CREATE DATABASE sikd_db;
-```
+**Frontend**
 
-### A3. Setup Backend
+| Teknologi    | Fungsi                    |
+| ------------ | ------------------------- |
+| React.js 18  | UI Framework              |
+| Vite         | Build tool dan dev server |
+| Tailwind CSS | Styling framework         |
+| React Router | Client-side routing       |
+| Axios        | HTTP client               |
+| Recharts     | Visualisasi data          |
+
+---
+
+## Kebutuhan Sistem
+
+### Software yang Diperlukan
+
+| Software | Versi Minimum | Cara Verifikasi  |
+| -------- | ------------- | ---------------- |
+| Node.js  | v18.0.0       | `node --version` |
+| npm      | v8.0.0        | `npm --version`  |
+| Git      | Versi terbaru | `git --version`  |
+
+### Kebutuhan Tambahan Berdasarkan Platform
+
+**Windows**
+
+- Laragon (sudah termasuk MySQL dan Apache)
+- Download: https://laragon.org/download/
+
+**Linux/macOS**
+
+- Docker dan Docker Compose
+- Instalasi sesuai distribusi masing-masing
+
+---
+
+## Instalasi dan Konfigurasi
+
+### Langkah Awal (Semua Platform)
 
 ```bash
-cd backend
-npm install
-copy env.template .env
-# Edit .env: sesuaikan DATABASE_URL
+# Clone repository
+git clone https://github.com/Faiz-abdurrachman/Sistem-Informasi-Kependudukan-Desa.git
 
-npm run prisma:generate
-npm run prisma:migrate
+# Masuk ke direktori project
+cd Sistem-Informasi-Kependudukan-Desa
 ```
 
-**Konfigurasi .env untuk Laragon:**
+---
+
+### Opsi A: Windows dengan Laragon
+
+#### A1. Instalasi Laragon
+
+1. Download Laragon dari https://laragon.org/download/
+2. Jalankan installer dan ikuti petunjuk instalasi
+3. Buka Laragon dan klik tombol **Start All** untuk menjalankan Apache dan MySQL
+
+#### A2. Membuat Database
+
+1. Klik kanan pada icon Laragon di system tray
+2. Pilih **MySQL** > **Open HeidiSQL**
+3. Buat koneksi baru dengan klik **New**
+4. Jalankan query berikut:
+
+```sql
+CREATE DATABASE sikd_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+#### A3. Konfigurasi Backend
+
+```bash
+# Masuk ke direktori backend
+cd backend
+
+# Install dependencies
+npm install
+
+# Salin file konfigurasi
+copy env.template .env
+```
+
+Edit file `.env` dengan konfigurasi berikut:
 
 ```env
+# Database Configuration
 DATABASE_URL="mysql://root:@localhost:3306/sikd_db"
-JWT_SECRET=sikd-super-secret-jwt-key-2024
+
+# JWT Configuration
+JWT_SECRET=sikd-super-secret-key-change-in-production-min-32-chars
 JWT_EXPIRES_IN=7d
+
+# Server Configuration
 PORT=5000
 FRONTEND_URL=http://localhost:5173
 NODE_ENV=development
 ```
 
-### A4. Setup Frontend
+Lanjutkan dengan migrasi database:
 
 ```bash
-cd frontend
-npm install
-```
-
----
-
-## OPSI B: Linux/macOS + Docker
-
-> ✅ **Recommended!** Lebih clean dan tidak ada masalah permission.
-
-### B1. Install Docker
-
-**Arch Linux:**
-
-```bash
-sudo pacman -S docker docker-compose
-sudo systemctl start docker
-sudo systemctl enable docker
-sudo usermod -aG docker $USER
-# Logout & login kembali
-```
-
-**Ubuntu/Debian:**
-
-```bash
-sudo apt update
-sudo apt install docker.io docker-compose-v2
-sudo systemctl start docker
-sudo usermod -aG docker $USER
-```
-
-**macOS:** Download Docker Desktop: https://docker.com/products/docker-desktop/
-
-### B2. Start Database
-
-```bash
-# Di root folder project
-docker compose up -d
-
-# Cek status
-docker compose ps
-
-# Database: localhost:3307
-# phpMyAdmin: localhost:8080
-```
-
-### B3. Setup Backend
-
-```bash
-cd backend
-npm install
-cp .env.docker .env
-
+# Generate Prisma Client
 npm run prisma:generate
+
+# Jalankan migrasi database
 npm run prisma:migrate
 ```
 
-### B4. Setup Frontend
+#### A4. Konfigurasi Frontend
 
 ```bash
-cd frontend
+# Masuk ke direktori frontend
+cd ../frontend
+
+# Install dependencies
 npm install
 ```
 
-### Docker Commands
+Buat file `.env` di direktori frontend:
 
-| Command                     | Fungsi                      |
-| --------------------------- | --------------------------- |
-| `docker compose up -d`      | Start database              |
-| `docker compose down`       | Stop database               |
-| `docker compose down -v`    | Reset database (hapus data) |
-| `docker compose logs -f db` | Lihat log MySQL             |
+```env
+VITE_API_URL=http://localhost:5000
+```
 
----
-
-## 🔐 Create Admin User
+#### A5. Membuat User Admin
 
 ```bash
-cd backend
+# Kembali ke direktori backend
+cd ../backend
+
+# Jalankan script pembuatan admin
 npm run create:admin
 ```
 
-**Login credentials:**
+Kredensial default:
 
-- Username: `admin`
-- Password: `admin123`
+- **Username:** admin
+- **Password:** admin123
 
 ---
 
-### Development Mode
+### Opsi B: Linux/macOS dengan Docker
 
-**Terminal 1 - Backend:**
+#### B1. Instalasi Docker
+
+**Arch Linux**
+
+```bash
+# Install Docker dan Docker Compose
+sudo pacman -S docker docker-compose
+
+# Jalankan dan aktifkan service Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Tambahkan user ke group docker (agar tidak perlu sudo)
+sudo usermod -aG docker $USER
+
+# Logout dan login kembali agar perubahan group berlaku
+```
+
+**Ubuntu/Debian**
+
+```bash
+# Update package index
+sudo apt update
+
+# Install Docker
+sudo apt install docker.io docker-compose-v2 -y
+
+# Jalankan service Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Tambahkan user ke group docker
+sudo usermod -aG docker $USER
+
+# Logout dan login kembali
+```
+
+**macOS**
+
+1. Download Docker Desktop dari https://www.docker.com/products/docker-desktop/
+2. Install dan jalankan Docker Desktop
+3. Pastikan Docker sudah berjalan (icon Docker muncul di menu bar)
+
+#### B2. Menjalankan Database dengan Docker
+
+```bash
+# Pastikan berada di root directory project
+cd Sistem-Informasi-Kependudukan-Desa
+
+# Jalankan container MySQL dan phpMyAdmin
+docker compose up -d
+
+# Verifikasi container berjalan
+docker compose ps
+```
+
+Informasi akses:
+
+| Service    | URL                   | Kredensial          |
+| ---------- | --------------------- | ------------------- |
+| MySQL      | localhost:3307        | root / rootpassword |
+| phpMyAdmin | http://localhost:8080 | root / rootpassword |
+
+#### B3. Konfigurasi Backend
+
+```bash
+# Masuk ke direktori backend
+cd backend
+
+# Install dependencies
+npm install
+
+# Salin file konfigurasi Docker
+cp .env.docker .env
+```
+
+Konfigurasi `.env` untuk Docker:
+
+```env
+# Database Configuration (Docker)
+DATABASE_URL="mysql://root:rootpassword@localhost:3307/sikd_db"
+
+# JWT Configuration
+JWT_SECRET=sikd-super-secret-key-change-in-production-min-32-chars
+JWT_EXPIRES_IN=7d
+
+# Server Configuration
+PORT=5001
+FRONTEND_URL=http://localhost:5173
+NODE_ENV=development
+```
+
+Jalankan migrasi:
+
+```bash
+# Generate Prisma Client
+npm run prisma:generate
+
+# Jalankan migrasi database
+npm run prisma:migrate
+```
+
+#### B4. Konfigurasi Frontend
+
+```bash
+# Masuk ke direktori frontend
+cd ../frontend
+
+# Install dependencies
+npm install
+```
+
+Buat file `.env`:
+
+```env
+VITE_API_URL=http://localhost:5001
+```
+
+#### B5. Membuat User Admin
+
+```bash
+cd ../backend
+npm run create:admin
+```
+
+#### B6. Perintah Docker yang Berguna
+
+| Perintah                    | Fungsi                                         |
+| --------------------------- | ---------------------------------------------- |
+| `docker compose up -d`      | Menjalankan container di background            |
+| `docker compose down`       | Menghentikan container                         |
+| `docker compose down -v`    | Menghentikan dan menghapus volume (reset data) |
+| `docker compose logs -f db` | Melihat log MySQL secara real-time             |
+| `docker compose ps`         | Melihat status container                       |
+| `docker compose restart`    | Restart semua container                        |
+
+---
+
+## Menjalankan Aplikasi
+
+### Mode Development
+
+Buka dua terminal terpisah:
+
+**Terminal 1 - Backend**
 
 ```bash
 cd backend
 npm run dev
-# Server berjalan di http://localhost:5000
 ```
 
-**Terminal 2 - Frontend:**
+**Terminal 2 - Frontend**
 
 ```bash
 cd frontend
 npm run dev
-# Frontend berjalan di http://localhost:5173
 ```
 
-### Production Mode
+### URL Akses Aplikasi
 
-**Backend:**
+| Service       | Windows (Laragon)     | Linux/macOS (Docker)  |
+| ------------- | --------------------- | --------------------- |
+| Frontend      | http://localhost:5173 | http://localhost:5173 |
+| Backend API   | http://localhost:5000 | http://localhost:5001 |
+| phpMyAdmin    | -                     | http://localhost:8080 |
+| Prisma Studio | http://localhost:5555 | http://localhost:5555 |
+
+Untuk membuka Prisma Studio (database GUI):
+
+```bash
+cd backend
+npm run prisma:studio
+```
+
+### Mode Production
+
+**Backend**
 
 ```bash
 cd backend
 npm start
 ```
 
-**Frontend:**
+**Frontend**
 
 ```bash
 cd frontend
@@ -338,29 +405,40 @@ npm run build
 npm run preview
 ```
 
-## 📚 Dokumentasi API
+---
+
+## Dokumentasi API
 
 ### Base URL
 
+| Environment          | URL                         |
+| -------------------- | --------------------------- |
+| Windows (Laragon)    | `http://localhost:5000/api` |
+| Linux/macOS (Docker) | `http://localhost:5001/api` |
+
+### Header Autentikasi
+
+Untuk endpoint yang memerlukan autentikasi, sertakan header:
+
 ```
-http://localhost:5000/api
+Authorization: Bearer <token>
 ```
 
-### Authentication
+### Endpoint Authentication
 
 #### POST /api/auth/register
 
-Register user baru
+Mendaftarkan user baru.
 
-**Request:**
+**Request Body:**
 
 ```json
 {
-  "username": "admin",
-  "email": "admin@desa.local",
-  "password": "admin123",
-  "nama": "Administrator",
-  "role": "ADMIN"
+  "username": "operator1",
+  "email": "operator1@desa.local",
+  "password": "password123",
+  "nama": "Operator Desa",
+  "role": "OPERATOR"
 }
 ```
 
@@ -371,7 +449,13 @@ Register user baru
   "success": true,
   "message": "Registrasi berhasil",
   "data": {
-    "user": { ... },
+    "user": {
+      "id": 2,
+      "username": "operator1",
+      "email": "operator1@desa.local",
+      "nama": "Operator Desa",
+      "role": "OPERATOR"
+    },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
   }
 }
@@ -379,9 +463,9 @@ Register user baru
 
 #### POST /api/auth/login
 
-Login user
+Login user.
 
-**Request:**
+**Request Body:**
 
 ```json
 {
@@ -403,393 +487,238 @@ Login user
 }
 ```
 
-#### GET /api/auth/profile
-
-Get profile user (butuh authentication)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-### Penduduk
-
-#### GET /api/penduduk
-
-Get semua penduduk (dengan pagination)
-
-**Query Params:**
-
-- `page` (default: 1)
-- `limit` (default: 10)
-- `search` (optional)
-- `statusKependudukan` (optional)
-
-**Headers:**
-
-```
-Authorization: Bearer <token>
-```
-
-#### GET /api/penduduk/:id
-
-Get penduduk by ID
-
-#### POST /api/penduduk
-
-Create penduduk baru
-
-**Request:**
-
-```json
-{
-  "nik": "3201010101010001",
-  "nama": "John Doe",
-  "tempatLahir": "Jakarta",
-  "tanggalLahir": "1990-01-01",
-  "jenisKelamin": "Laki-laki",
-  "alamat": "Jl. Contoh No. 123",
-  ...
-}
-```
-
-#### PUT /api/penduduk/:id
-
-Update penduduk
-
-#### DELETE /api/penduduk/:id
-
-Delete penduduk
-
-### Kartu Keluarga
-
-#### GET /api/kk
-
-Get semua Kartu Keluarga
-
-#### GET /api/kk/:id
-
-Get Kartu Keluarga by ID
-
-#### POST /api/kk
-
-Create Kartu Keluarga baru
-
-#### PUT /api/kk/:id
-
-Update Kartu Keluarga
-
-#### DELETE /api/kk/:id
-
-Delete Kartu Keluarga
-
-#### POST /api/kk/:id/anggota
-
-Tambah anggota keluarga
-
-#### DELETE /api/kk/:id/anggota/:anggotaId
-
-Hapus anggota keluarga
-
-### Surat
-
-#### GET /api/surat
-
-Get semua surat
-
-#### GET /api/surat/:id
-
-Get surat by ID
-
-#### POST /api/surat
-
-Create surat baru (nomor surat otomatis generate)
-
-#### PUT /api/surat/:id
-
-Update surat
-
-#### PATCH /api/surat/:id/status
-
-Update status surat
-
-#### DELETE /api/surat/:id
-
-Delete surat
-
-### Statistik
-
-#### GET /api/statistik
-
-Get statistik kependudukan
-
-**Query Params:**
-
-- `useCache` (default: true)
-
-#### GET /api/statistik/refresh
-
-Refresh cache statistik (ADMIN/OPERATOR only)
-
-### Import
-
-#### POST /api/import/penduduk
-
-Import data penduduk dari CSV
-
-**Request:**
-
-- Content-Type: `multipart/form-data`
-- Field: `file` (CSV file)
-
-## 🎯 Human Touch Features
-
-### 1. Validasi NIK & KK
-
-- ✅ NIK harus 16 digit angka, unique
-- ✅ Nomor KK harus 16 digit angka, unique
-- ✅ Validasi format sesuai aturan resmi
-
-### 2. Penomoran Surat Otomatis
-
-- ✅ Format: `NOMOR/JENIS/TAHUN`
-- ✅ Contoh: `001/SKD/2024`, `002/KET/2024`
-- ✅ Auto increment per jenis surat dan tahun
-- ✅ Nomor surat tidak bisa diubah setelah dibuat
-
-### 3. Penandatanganan Pejabat
-
-- ✅ Tracking siapa yang menandatangani surat
-- ✅ Jabatan penandatangan (Kepala Desa, Sekretaris Desa)
-
-### 4. Validasi Data
-
-- ✅ Tanggal lahir tidak boleh di masa depan
-- ✅ Status kependudukan: Aktif, Meninggal, Pindah
-- ✅ Validasi relasi data (kepala keluarga, anggota keluarga)
-
-### 5. Kebijakan Data
-
-- ✅ Soft delete untuk data penting
-- ✅ Tracking perubahan data (createdAt, updatedAt)
-- ✅ Status aktif/nonaktif untuk user
-
-## 🔒 Keamanan
-
-### Authentication & Authorization
-
-- ✅ JWT token dengan expiration (7 hari)
-- ✅ Password hashing dengan bcrypt (salt rounds: 10)
-- ✅ Role-Based Access Control (RBAC)
-- ✅ Protected routes dengan middleware
-
-### Input Validation
-
-- ✅ Validasi input di backend
-- ✅ Sanitization data
-- ✅ SQL injection protection (Prisma ORM)
-
-### Error Handling
-
-- ✅ Centralized error handling
-- ✅ Error messages yang user-friendly
-- ✅ Tidak expose sensitive information di production
-
-## 🐛 Troubleshooting
-
-### Database Connection Error
-
-**Error:** `Database connection failed`
-
-**Solusi:**
-
-1. Pastikan Laragon MySQL sudah running
-2. Cek `DATABASE_URL` di `.env` sudah benar
-3. Pastikan database sudah dibuat
-4. Test koneksi dengan Prisma Studio: `npm run prisma:studio`
-
-### Port Already in Use
-
-**Error:** `Port 5000 is already in use`
-
-**Solusi:**
-
-1. Ubah `PORT` di `.env` backend
-2. Atau kill process yang menggunakan port tersebut:
+### Endpoint Penduduk
+
+| Method | Endpoint          | Deskripsi                    | Akses           |
+| ------ | ----------------- | ---------------------------- | --------------- |
+| GET    | /api/penduduk     | Daftar penduduk (pagination) | Semua role      |
+| GET    | /api/penduduk/:id | Detail penduduk              | Semua role      |
+| POST   | /api/penduduk     | Tambah penduduk              | ADMIN, OPERATOR |
+| PUT    | /api/penduduk/:id | Update penduduk              | ADMIN, OPERATOR |
+| DELETE | /api/penduduk/:id | Hapus penduduk               | ADMIN           |
+
+### Endpoint Kartu Keluarga
+
+| Method | Endpoint                       | Deskripsi                | Akses           |
+| ------ | ------------------------------ | ------------------------ | --------------- |
+| GET    | /api/kk                        | Daftar KK                | Semua role      |
+| GET    | /api/kk/:id                    | Detail KK dengan anggota | Semua role      |
+| POST   | /api/kk                        | Tambah KK                | ADMIN, OPERATOR |
+| PUT    | /api/kk/:id                    | Update KK                | ADMIN, OPERATOR |
+| DELETE | /api/kk/:id                    | Hapus KK                 | ADMIN           |
+| POST   | /api/kk/:id/anggota            | Tambah anggota KK        | ADMIN, OPERATOR |
+| DELETE | /api/kk/:id/anggota/:anggotaId | Hapus anggota KK         | ADMIN, OPERATOR |
+
+### Endpoint Surat
+
+| Method | Endpoint              | Deskripsi           | Akses           |
+| ------ | --------------------- | ------------------- | --------------- |
+| GET    | /api/surat            | Daftar surat        | Semua role      |
+| GET    | /api/surat/:id        | Detail surat        | Semua role      |
+| POST   | /api/surat            | Buat surat baru     | ADMIN, OPERATOR |
+| PUT    | /api/surat/:id        | Update surat        | ADMIN, OPERATOR |
+| PATCH  | /api/surat/:id/status | Update status surat | ADMIN, OPERATOR |
+| DELETE | /api/surat/:id        | Hapus surat         | ADMIN           |
+
+### Endpoint Statistik
+
+| Method | Endpoint               | Deskripsi               | Akses           |
+| ------ | ---------------------- | ----------------------- | --------------- |
+| GET    | /api/statistik         | Statistik kependudukan  | Semua role      |
+| GET    | /api/statistik/refresh | Refresh cache statistik | ADMIN, OPERATOR |
+
+---
+
+## Fitur Keamanan
+
+### Konfigurasi Keamanan yang Diterapkan
+
+| Fitur                    | Implementasi       | Deskripsi                                              |
+| ------------------------ | ------------------ | ------------------------------------------------------ |
+| Security Headers         | Helmet.js          | Content-Security-Policy, HSTS, X-Frame-Options         |
+| Rate Limiting            | express-rate-limit | 100 request/15 menit (umum), 5 request/15 menit (auth) |
+| Password Hashing         | bcrypt             | Salt rounds: 10                                        |
+| Token Authentication     | JWT                | Expiration: 7 hari, dengan issuer dan audience         |
+| SQL Injection Prevention | Prisma ORM         | Parameterized queries                                  |
+| CORS                     | cors middleware    | Hanya izinkan origin yang terdaftar                    |
+
+### Konfigurasi Rate Limiting
+
+| Endpoint       | Limit       | Window   |
+| -------------- | ----------- | -------- |
+| /api/\* (umum) | 100 request | 15 menit |
+| /api/auth/\*   | 5 request   | 15 menit |
+
+### Praktik Keamanan Produksi
+
+1. **JWT_SECRET**: Gunakan string random minimal 32 karakter
 
    ```bash
-   # Windows
-   netstat -ano | findstr :5000
-   taskkill /PID <PID> /F
-
-   # Linux/Mac
-   lsof -ti:5000 | xargs kill
+   openssl rand -base64 32
    ```
 
-### CORS Error
+2. **HTTPS**: Pastikan menggunakan HTTPS di production
 
-**Error:** `CORS policy: No 'Access-Control-Allow-Origin' header`
+3. **Environment Variables**: Jangan commit file `.env` ke repository
+
+4. **Database**: Lakukan backup berkala
+
+---
+
+## Struktur Project
+
+```
+Sistem-Informasi-Kependudukan-Desa/
+├── backend/
+│   ├── src/
+│   │   ├── app.js                 # Konfigurasi Express
+│   │   ├── server.js              # Entry point server
+│   │   ├── config/
+│   │   │   ├── database.js        # Konfigurasi Prisma
+│   │   │   └── jwt.js             # Konfigurasi JWT
+│   │   ├── middleware/
+│   │   │   ├── authMiddleware.js  # Autentikasi JWT
+│   │   │   └── roleMiddleware.js  # Otorisasi berbasis role
+│   │   ├── controllers/           # Business logic
+│   │   ├── routes/                # Definisi endpoint API
+│   │   ├── services/              # Service layer
+│   │   └── utils/                 # Fungsi utilitas
+│   ├── prisma/
+│   │   └── schema.prisma          # Schema database
+│   ├── package.json
+│   └── .env.docker
+│
+├── frontend/
+│   ├── src/
+│   │   ├── api/                   # Konfigurasi Axios
+│   │   ├── components/            # Komponen React
+│   │   ├── context/               # React Context
+│   │   ├── pages/                 # Halaman aplikasi
+│   │   ├── utils/                 # Fungsi utilitas
+│   │   ├── App.jsx                # Root component
+│   │   └── main.jsx               # Entry point
+│   ├── package.json
+│   └── vite.config.js
+│
+├── docker-compose.yml             # Konfigurasi Docker
+└── README.md
+```
+
+---
+
+## Pemecahan Masalah
+
+### Error: Database Connection Failed
+
+**Penyebab:** Database tidak bisa diakses.
 
 **Solusi:**
 
-1. Pastikan `FRONTEND_URL` di `.env` backend sudah benar
-2. Restart backend server
+1. Pastikan MySQL/Docker sudah berjalan
+2. Periksa konfigurasi `DATABASE_URL` di file `.env`
+3. Verifikasi kredensial database
 
-### Prisma Migration Error
+```bash
+# Untuk Docker
+docker compose ps
+docker compose logs db
+```
 
-**Error:** `Migration failed`
+### Error: Port Already in Use
 
-**Solusi:**
-
-1. Pastikan database sudah dibuat
-2. Pastikan `DATABASE_URL` benar
-3. Reset database jika perlu:
-   ```bash
-   npm run prisma:migrate reset
-   ```
-
-### Module Not Found
-
-**Error:** `Cannot find module 'xxx'`
+**Penyebab:** Port sudah digunakan oleh aplikasi lain.
 
 **Solusi:**
 
 ```bash
-# Install ulang dependencies
+# Linux/macOS - Cari dan hentikan proses
+lsof -ti:5001 | xargs kill -9
+
+# Windows - Cari proses
+netstat -ano | findstr :5000
+taskkill /PID <PID> /F
+```
+
+Atau ubah port di file `.env`.
+
+### Error: CORS Policy
+
+**Penyebab:** Frontend URL tidak sesuai dengan konfigurasi backend.
+
+**Solusi:**
+
+1. Periksa `FRONTEND_URL` di `.env` backend
+2. Pastikan URL sesuai dengan tempat frontend berjalan
+3. Restart backend server
+
+### Error: Module Not Found
+
+**Penyebab:** Dependencies tidak terinstall dengan benar.
+
+**Solusi:**
+
+```bash
+# Hapus node_modules dan install ulang
 rm -rf node_modules package-lock.json
 npm install
 ```
 
-## 📚 Dokumentasi Lengkap
+### Error: Too Many Requests (429)
 
-Untuk dokumentasi lebih lengkap tentang sistem, silakan baca:
+**Penyebab:** Rate limiter aktif karena terlalu banyak request.
 
-1. **[ANALISIS-DAN-RENCANA-PERBAIKAN.md](./ANALISIS-DAN-RENCANA-PERBAIKAN.md)**
-   - Analisis masalah yang ditemukan
-   - Rencana perbaikan dengan prioritas
-   - Checklist perbaikan
-   - Prompt untuk implementasi
+**Solusi:**
 
-2. **[MODEL-ADMINISTRATIF-STATUS.md](./MODEL-ADMINISTRATIF-STATUS.md)**
-   - Model administratif berbasis status (WAJIB)
-   - Aturan validasi ketat untuk penduduk AKTIF
-   - Alur kerja administratif yang benar
+1. Tunggu 15 menit untuk reset limit
+2. Untuk development, bisa sementara disable rate limiter
 
-3. **[TESTING-VALIDASI-ADMINISTRATIF.md](./TESTING-VALIDASI-ADMINISTRATIF.md)**
-   - Panduan testing dan verifikasi validasi administratif
-   - Skenario testing lengkap dengan contoh request/response
-   - Checklist verifikasi implementasi
+### Error: Prisma Migration Failed
 
-4. **[REVIEW-PHASE-0.1-AUDIT-LOG.md](./REVIEW-PHASE-0.1-AUDIT-LOG.md)**
-   - Review implementasi Phase 0.1: Audit Log System
-   - Penjelasan lengkap apa yang sudah dibuat
-   - Panduan testing & uji coba
-   - Checklist verifikasi
-   - Troubleshooting guide
+**Penyebab:** Masalah dengan migrasi database.
 
-5. **[REVIEW-PHASE-0.2-SOFT-DELETE.md](./REVIEW-PHASE-0.2-SOFT-DELETE.md)**
-   - Review implementasi Phase 0.2: Soft Delete Policy
-   - Penjelasan lengkap apa yang sudah dibuat
-   - Panduan testing & uji coba
-   - Checklist verifikasi
-   - Troubleshooting guide
+**Solusi:**
 
-6. **[REVIEW-PHASE-0.3-PENOMORAN-SURAT.md](./REVIEW-PHASE-0.3-PENOMORAN-SURAT.md)**
-   - Review implementasi Phase 0.3: Penomoran Surat Resmi
-   - Penjelasan lengkap apa yang sudah dibuat
-   - Panduan testing & uji coba
-   - Checklist verifikasi
-   - Troubleshooting guide
+```bash
+# Reset database (HATI-HATI: menghapus semua data)
+npm run prisma:migrate reset
 
-7. **[REVIEW-PHASE-1-DATA-INTEGRITY.md](./REVIEW-PHASE-1-DATA-INTEGRITY.md)**
-   - Review implementasi Phase 1: Data Integrity (Auto-sync Penduduk ↔ KK)
-   - Penjelasan lengkap apa yang sudah dibuat
-   - Panduan testing & uji coba
-   - Checklist verifikasi
-   - Troubleshooting guide
-
-8. **[REVIEW-PHASE-2-USER-MANAGEMENT.md](./REVIEW-PHASE-2-USER-MANAGEMENT.md)**
-   - Review implementasi Phase 2: User Management & Dokumentasi
-   - Penjelasan lengkap apa yang sudah dibuat
-   - Panduan testing & uji coba
-   - Checklist verifikasi
-   - Troubleshooting guide
-
-9. **[REVIEW-PHASE-3-OUTPUT-DESA-DATA-QUALITY.md](./REVIEW-PHASE-3-OUTPUT-DESA-DATA-QUALITY.md)**
-   - Review implementasi Phase 3: Output Desa & Data Quality
-   - Penjelasan lengkap apa yang sudah dibuat
-   - Panduan testing & uji coba
-   - Checklist verifikasi
-   - Troubleshooting guide
-
-10. **[DIAGRAM-KONSEP.md](./DIAGRAM-KONSEP.md)**
-
-- Entity Relationship Diagram (ERD)
-- Diagram alur data
-- Arsitektur sistem
-- Security layers
-
-3. **[ALUR-KERJA-DESA.md](./ALUR-KERJA-DESA.md)**
-   - Narasi sistem
-   - Alur kerja sehari-hari
-   - Use case detail
-   - Contoh kasus nyata
-
-4. **[ROLE-PERMISSION.md](./ROLE-PERMISSION.md)**
-
-- Permission matrix lengkap
-- Detail peran setiap role
-- Security considerations
-- Implementation notes
+# Atau force push schema
+npm run prisma:db push
+```
 
 ---
 
-## 📝 Catatan Penting
+## Dokumentasi Tambahan
 
-1. **JWT_SECRET**: WAJIB diubah di production dengan string random yang kuat!
+Dokumentasi teknis tambahan tersedia di dalam repository:
 
-   ```bash
-   # Generate random string
-   openssl rand -base64 32
-   ```
-
-2. **Database**: Pastikan backup database secara berkala
-
-3. **Environment Variables**: Jangan commit file `.env` ke git (sudah ada di .gitignore)
-
-4. **Production**: Set `NODE_ENV=production` di production
-
-## 📄 License
-
-Project ini dibuat untuk keperluan akademik (skripsi, PKL) atau project client desa.
-
-## 👨‍💻 Developer Notes
-
-### Arsitektur
-
-- **Backend**: RESTful API dengan Express.js
-- **Frontend**: SPA dengan React.js
-- **Database**: MySQL dengan Prisma ORM
-- **Authentication**: JWT stateless
-
-### Best Practices
-
-- ✅ Clean code dengan dokumentasi lengkap
-- ✅ Separation of concerns
-- ✅ Controller-Service-Route pattern
-- ✅ Error handling yang konsisten
-- ✅ Input validation
-- ✅ Security best practices
-
-### Untuk Presentasi
-
-1. Jelaskan arsitektur sistem (frontend-backend separation)
-2. Highlight human touch features (validasi NIK, penomoran surat)
-3. Jelaskan keamanan (JWT, RBAC, password hashing)
-4. Demo fitur-fitur utama
-5. Tunjukkan dokumentasi code yang lengkap
+| Dokumen                           | Deskripsi                              |
+| --------------------------------- | -------------------------------------- |
+| ANALISIS-DAN-RENCANA-PERBAIKAN.md | Analisis masalah dan rencana perbaikan |
+| MODEL-ADMINISTRATIF-STATUS.md     | Model administratif berbasis status    |
+| TESTING-VALIDASI-ADMINISTRATIF.md | Panduan testing validasi               |
+| DIAGRAM-KONSEP.md                 | ERD, diagram alur, dan arsitektur      |
+| ALUR-KERJA-DESA.md                | Narasi sistem dan use case             |
+| ROLE-PERMISSION.md                | Matrix permission dan security         |
 
 ---
 
-**Selamat menggunakan Sistem Informasi Kependudukan Desa! 🎉**
+## Kontribusi
+
+1. Fork repository ini
+2. Buat branch fitur (`git checkout -b fitur-baru`)
+3. Commit perubahan (`git commit -m 'Menambahkan fitur baru'`)
+4. Push ke branch (`git push origin fitur-baru`)
+5. Buat Pull Request
+
+---
+
+## Lisensi
+
+Project ini dibuat untuk keperluan akademik dan dapat digunakan sebagai referensi pengembangan sistem informasi desa.
+
+---
+
+## Informasi Kontak
+
+Untuk pertanyaan atau masalah, silakan buat issue di repository ini.
