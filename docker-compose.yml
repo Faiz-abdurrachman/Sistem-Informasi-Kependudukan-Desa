@@ -1,0 +1,48 @@
+# ============================================
+# DOCKER COMPOSE - SISTEM INFORMASI KEPENDUDUKAN DESA
+# ============================================
+#
+# Jalankan dengan: docker compose up -d
+# Stop dengan: docker compose down
+#
+# ============================================
+
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: sikd_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sikd_db
+      MYSQL_USER: sikd_user
+      MYSQL_PASSWORD: sikd_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # phpMyAdmin (Optional - untuk GUI database)
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: sikd_phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:80"
+
+volumes:
+  mysql_data:
+    driver: local
