@@ -30,6 +30,8 @@
 
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import pendudukRoutes from "./routes/pendudukRoutes.js";
@@ -46,6 +48,51 @@ import dataQualityRoutes from "./routes/dataQualityRoutes.js";
 dotenv.config();
 
 const app = express();
+
+// ============================================
+// SECURITY MIDDLEWARE (Phase 5 - Added!)
+// ============================================
+
+/**
+ * Helmet Security Headers
+ * Protects from common web vulnerabilities
+ */
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+}));
+
+/**
+ * Rate Limiter - General API
+ * Limit 100 requests per 15 minutes
+ */
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: {
+    success: false,
+    message: "Terlalu banyak request. Silakan coba lagi dalam 15 menit.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+/**
+ * Rate Limiter - Auth (Login/Register)
+ * Stricter: 5 attempts per 15 minutes
+ */
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  message: {
+    success: false,
+    message: "Terlalu banyak percobaan login. Silakan coba lagi dalam 15 menit.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply general rate limit to all API routes
+app.use("/api/", generalLimiter);
 
 // ============================================
 // MIDDLEWARE
@@ -127,7 +174,7 @@ app.get("/api/health", (req, res) => {
  * API Routes
  * Semua API endpoint diorganisir per feature
  */
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes); // Stricter rate limit for auth
 app.use("/api/users", userRoutes);
 app.use("/api/penduduk", pendudukRoutes);
 app.use("/api/kk", kkRoutes);
